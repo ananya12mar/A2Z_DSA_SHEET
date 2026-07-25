@@ -68,6 +68,30 @@ bool searchMatrix(vector<vector<int>> &mat, int target)
     return false;
 }
 
+bool searchMatrixII(vector<vector<int>> &matrix, int target)
+{
+    int n = matrix.size();
+    int m = matrix[0].size();
+    int i = 0;
+    int j = m - 1;
+    while (i < n && j >= 0)
+    {
+        if (matrix[i][j] == target)
+        {
+            return true;
+        }
+        if (matrix[i][j] > target)
+        {
+            j--;
+        }
+        else
+        {
+            i++;
+        }
+    }
+    return false;
+}
+
 int main()
 {
     int n, m;
@@ -82,7 +106,7 @@ int main()
     }
     int target;
     cin >> target;
-    bool ans = searchMatrix(arr, target);
+    bool ans = searchMatrixII(arr, target);
     cout << ans << endl;
     return 0;
 }
