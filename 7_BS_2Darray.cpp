@@ -92,6 +92,107 @@ bool searchMatrixII(vector<vector<int>> &matrix, int target)
     return false;
 }
 
+int maxElementInACol(vector<vector<int>> &mat, int n, int m, int mid)
+{
+    int maxEle = INT_MIN;
+    int idx = -1;
+    for (int i = 0; i < n; i++)
+    {
+        if (mat[i][mid] > maxEle)
+        {
+            maxEle = mat[i][mid];
+            idx = i;
+        }
+    }
+    return idx;
+}
+
+vector<int> findPeakGrid(vector<vector<int>> &mat)
+{
+    int n = mat.size();
+    int m = mat[0].size();
+    int low = 0;
+    int high = m - 1;
+    while (low <= high)
+    {
+        int mid = low + (high - low) / 2;
+        int row = maxElementInACol(mat, n, m, mid);
+        int left = mid - 1 >= 0 ? mat[row][mid - 1] : -1;
+        int right = mid + 1 < m ? mat[row][mid + 1] : -1;
+        if (mat[row][mid] > left && mat[row][mid] > right)
+        {
+            return {row, mid};
+        }
+        else if (mat[row][mid] < left)
+        {
+            high = mid - 1;
+        }
+        else
+        {
+            low = mid + 1;
+        }
+    }
+    return {-1, -1};
+}
+
+int upper_bound(vector<int> &matrix, int n, int x)
+{
+    int low = 0;
+    int high = n - 1;
+    int ans = n;
+    while (low <= high)
+    {
+        int mid = low + (high - low) / 2;
+        if (matrix[mid] > x)
+        {
+            ans = mid;
+            high = mid - 1;
+        }
+        else
+        {
+            low = mid + 1;
+        }
+    }
+    return ans;
+}
+
+int countSmallEqual(vector<vector<int>> &matrix, int n, int m, int mid)
+{
+    int cnt = 0;
+    for (int i = 0; i < n; i++)
+    {
+        cnt += upper_bound(matrix[i], m, mid);
+    }
+    return cnt;
+}
+
+int findMedian(vector<vector<int>> &matrix)
+{
+    int low = INT_MAX;
+    int high = INT_MIN;
+    int n = matrix.size();
+    int m = matrix[0].size();
+    for (int i = 0; i < n; i++)
+    {
+        low = min(matrix[i][0], low);
+        high = max(matrix[i][m - 1], high);
+    }
+    int req = (n * m) / 2;
+    while (low <= high)
+    {
+        int mid = low + (high - low) / 2;
+
+        int smallEqual = countSmallEqual(matrix, n, m, mid);
+        if (smallEqual <= req)
+        {
+            low = mid + 1;
+        }
+        else
+            high = mid - 1;
+    }
+    return low;
+}
+
 int main()
 {
     int n, m;
@@ -104,9 +205,8 @@ int main()
             cin >> arr[i][j];
         }
     }
-    int target;
-    cin >> target;
-    bool ans = searchMatrixII(arr, target);
-    cout << ans << endl;
+    int ans;
+    ans = findMedian(arr);
+    cout << ans;
     return 0;
 }
