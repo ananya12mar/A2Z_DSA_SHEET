@@ -83,9 +83,50 @@ string longestCommonPrefix(vector<string> &str)
     return ans;
 }
 
+bool isomorphicString(string s, string t)
+{
+    int m1[256] = {0}, m2[256] = {0};
+    int n = s.size();
+    for (int i = 0; i < n; i++)
+    {
+        if (m1[s[i]] != m2[t[i]])
+            return false;
+        m1[s[i]] = i + 1;
+        m2[t[i]] = i + 1;
+    }
+    return true;
+}
+
+bool rotateString(string &s, string &goal)
+{
+    if (s.length() != goal.length())
+        return false;
+    string doubleString = s + s;
+    return doubleString.find(goal) != string::npos;
+}
+
+bool anagramStrings(string &s, string t)
+{
+    if (s.length() != t.length())
+        return false;
+
+    int freq[26] = {0};
+    for (int i = 0; i < 26; i++)
+    {
+        freq[s[i] - 'a']++;
+        freq[t[i] - 'a']--;
+    }
+    for (int i = 0; i < 26; i++)
+    {
+        if (freq[i] != 0)
+            return false;
+    }
+    return true;
+}
 int main()
 {
-    vector<string> s = {"flowers", "flow", "fly", "flight"};
-    // getline(cin, s);
-    cout << longestCommonPrefix(s);
+    string s, t;
+    getline(cin, s);
+    getline(cin, t);
+    cout << anagramStrings(s, t);
 }
