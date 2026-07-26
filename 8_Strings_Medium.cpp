@@ -43,9 +43,49 @@ string reverseWords(string s)
     return result;
 }
 
+string largeOddNum(string &s)
+{
+    int lastOcc = -1;
+    for (int i = s.length() - 1; i >= 0; i--)
+    {
+        if (s[i] % 2 != 0)
+        {
+            lastOcc = i;
+            break;
+        }
+    }
+    int cnt = 0;
+    while (cnt <= lastOcc && s[cnt] == '0')
+        cnt++;
+    return s.substr(cnt, lastOcc - cnt + 1);
+}
+
+string longestCommonPrefix(vector<string> &str)
+{
+    if (str.empty())
+        return "";
+    sort(str.begin(), str.end());
+    string first = str[0];
+    string last = str[str.size() - 1];
+    string ans = "";
+    int minLength = min(first.size(), last.size());
+    for (int i = 0; i < minLength; i++)
+    {
+        if (first[i] == last[i])
+        {
+            ans += first[i];
+        }
+        else
+        {
+            break;
+        }
+    }
+    return ans;
+}
+
 int main()
 {
-    string s;
-    getline(cin, s);
-    cout << removeOuterParentheses(s);
+    vector<string> s = {"flowers", "flow", "fly", "flight"};
+    // getline(cin, s);
+    cout << longestCommonPrefix(s);
 }
