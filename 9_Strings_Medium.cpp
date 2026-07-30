@@ -54,6 +54,71 @@ int maxDepth(string s)
     return depthMax;
 }
 
+int romanToInt(string s)
+{
+    int ans = 0;
+    unordered_map<char, int> roman = {
+        {'I', 1},
+        {'V', 5},
+        {'X', 10},
+        {'L', 50},
+        {'C', 100},
+        {'D', 500},
+        {'M', 1000}};
+    for (int i = 0; i < s.length(); i++)
+    {
+        if (roman[s[i]] >= roman[s[i + 1]])
+        {
+            ans += roman[s[i]];
+        }
+        else
+        {
+            ans -= roman[s[i]];
+        }
+    }
+    return ans;
+}
+
+int myAtoi(string input)
+{
+    if (input.length() == 0)
+        return 0;
+
+    int i = 0;
+    while (input[i] == ' ' && i < input.length())
+    {
+        i++;
+    }
+    input = input.substr(i);
+
+    int sign = +1;
+    long ans = 0;
+
+    if (input[0] == '-')
+        sign = -1;
+    int MAX = INT_MAX;
+    int MIN = INT_MIN;
+
+    i = (input[0] == '+' || input[0] == '-') ? 1 : 0;
+
+    while (i < input.length())
+    {
+
+        if (input[i] == ' ' || !isdigit(input[i]))
+            break;
+
+        ans = ans * 10 + input[i] - '0';
+
+        if (sign == -1 && -1 * ans < MIN)
+            return MIN;
+        if (sign == +1 && ans > MAX)
+            return MAX;
+
+        i++;
+    }
+    return (int)(sign * ans);
+}
+
 int main()
 {
     string s;
@@ -63,5 +128,5 @@ int main()
     // {
     //     cout << ans[i] << " ";
     // }
-    cout << maxDepth(s);
+    cout << myAtoi(s);
 }
