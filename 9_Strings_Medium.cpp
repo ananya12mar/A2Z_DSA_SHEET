@@ -119,14 +119,45 @@ int myAtoi(string input)
     return (int)(sign * ans);
 }
 
+int atMostKDistinct(string s, int k)
+{
+    int left = 0, res = 0;
+    unordered_map<char, int> freq;
+
+    for (int right = 0; right < s.size(); right++)
+    {
+        freq[s[right]]++;
+
+        while (freq.size() > k)
+        {
+            freq[s[left]]--;
+            if (freq[s[left]] == 0)
+                freq.erase(s[left]);
+            left++;
+        }
+
+        // Count substrings in current window
+        res += (right - left + 1);
+    }
+    return res;
+}
+int countSubstrings(string s, int k)
+{
+    // Exactly k = atMost(k) - atMost(k-1)
+    return atMostKDistinct(s, k) - atMostKDistinct(s, k - 1);
+}
+
 int main()
 {
     string s;
+    int k;
     getline(cin, s);
+    // cin.ignore();
+    cin >> k;
     // vector<char> ans = frequencySort(s);
     // for (int i = 0; i < ans.size(); i++)
     // {
     //     cout << ans[i] << " ";
     // }
-    cout << myAtoi(s);
+    cout << countSubstrings(s, k);
 }
