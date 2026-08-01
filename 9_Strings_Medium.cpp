@@ -147,17 +147,110 @@ int countSubstrings(string s, int k)
     return atMostKDistinct(s, k) - atMostKDistinct(s, k - 1);
 }
 
+string longestPalindrome(string s)
+{
+    string res = "";
+    int resLen = 0;
+    for (int i = 0; i < s.length(); i++)
+    {
+        // odd length string
+        int left = i, right = i;
+        while (left >= 0 && right < s.length() && s[left] == s[right])
+        {
+            if ((right - left + 1) > resLen)
+            {
+                res = s.substr(left, right - left + 1);
+                resLen = right - left + 1;
+            }
+            left--;
+            right++;
+        }
+
+        // even length string
+        left = i, right = i + 1;
+        while (left >= 0 && right < s.length() && s[left] == s[right])
+        {
+            if ((right - left + 1) > resLen)
+            {
+                res = s.substr(left, right - left + 1);
+                resLen = right - left + 1;
+            }
+            left--;
+            right++;
+        }
+    }
+    return res;
+}
+int getMaxCount(int freq[])
+{
+    int maxCount = 0;
+    for (int i = 0; i < 26; i++)
+    {
+        maxCount = max(maxCount, freq[i]);
+    }
+    return maxCount;
+}
+int getMinCount(int freq[])
+{
+    int minCount = INT_MAX;
+    for (int i = 0; i < 26; i++)
+    {
+        if (freq[i] != 0)
+        {
+            minCount = min(minCount, freq[i]);
+        }
+    }
+    return minCount;
+}
+
+int beautySum(string s)
+{
+    int sum = 0;
+    for (int i = 0; i < s.length(); i++)
+    {
+        int freq[26] = {0};
+        for (int j = i; j < s.length(); j++)
+        {
+            freq[s[j] - 'a']++;
+            int beauty = getMaxCount(freq) - getMinCount(freq);
+            sum += beauty;
+        }
+    }
+    return sum;
+}
+
+string reverseWords(string s)
+{
+    string result = "";
+    int i = s.size() - 1;
+    while (i >= 0)
+    {
+        while (i >= 0 && s[i] == ' ')
+            i--;
+        if (i < 0)
+            break;
+        int end = i;
+        while (i >= 0 && s[i] != ' ')
+            i--;
+        string word = s.substr(i + 1, end - i);
+        if (!result.empty())
+            result += " ";
+        result += word;
+    }
+    return result;
+}
+
 int main()
 {
     string s;
-    int k;
     getline(cin, s);
     // cin.ignore();
-    cin >> k;
+    // int k;
+    // cin >> k;
     // vector<char> ans = frequencySort(s);
     // for (int i = 0; i < ans.size(); i++)
     // {
     //     cout << ans[i] << " ";
     // }
-    cout << countSubstrings(s, k);
+    cout << reverseWords(s);
 }
