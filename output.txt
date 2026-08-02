@@ -1,2 +1,2 @@
-After Insertion at Head: 6 5 2 3 
-0
+4 3 2 
+2 3 4 
