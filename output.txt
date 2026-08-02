@@ -1,1 +1,2 @@
-jungle the to welcome
+After Insertion at Head: 6 5 2 3 
+0
