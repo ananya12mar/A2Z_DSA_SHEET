@@ -57,6 +57,47 @@ bool hasCycle(ListNode *head)
 
 ListNode *findStartingPoint(ListNode *head)
 {
+    ListNode *slow = head;
+    ListNode *fast = head;
+    while (fast != nullptr && fast->next != nullptr)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (fast == slow)
+        {
+            slow = head;
+            while (fast != slow)
+            {
+                slow = slow->next;
+                fast = fast->next;
+            }
+            return slow;
+        }
+    }
+    return nullptr;
+}
+
+int findLengthOfLoop(ListNode *head)
+{
+    ListNode *slow = head;
+    ListNode *fast = head;
+    while (fast != nullptr && fast->next != nullptr)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (fast == slow)
+        {
+            fast = fast->next;
+            int count = 1;
+            while (fast != slow)
+            {
+                count++;
+                fast = fast->next;
+            }
+            return count;
+        }
+    }
+    return 0;
 }
 int main()
 {
@@ -73,6 +114,6 @@ int main()
     // Create a loop
     fifth->next = third;
 
-    cout << hasCycle(head);
+    cout << findLengthOfLoop(head);
     cout << endl;
 }
