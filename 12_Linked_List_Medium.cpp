@@ -41,20 +41,38 @@ ListNode *reverseList(ListNode *head)
     return prev;
 }
 
+bool hasCycle(ListNode *head)
+{
+    ListNode *slow = head;
+    ListNode *fast = head;
+    while (fast != nullptr && fast->next != nullptr)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (fast == slow)
+            return true;
+    }
+    return false;
+}
+
+ListNode *findStartingPoint(ListNode *head)
+{
+}
 int main()
 {
     ListNode *head = new ListNode(1);
-    head->next = new ListNode(2);
-    head->next->next = new ListNode(3);
-    head->next->next->next = new ListNode(4);
-    head->next->next->next->next = new ListNode(5);
-    ListNode *newHead = reverseList(head);
+    ListNode *second = new ListNode(2);
+    ListNode *third = new ListNode(3);
+    ListNode *fourth = new ListNode(4);
+    ListNode *fifth = new ListNode(5);
 
-    // Printing the reversed list
-    while (newHead != NULL)
-    {
-        cout << newHead->data << " ";
-        newHead = newHead->next;
-    }
+    head->next = second;
+    second->next = third;
+    third->next = fourth;
+    fourth->next = fifth;
+    // Create a loop
+    fifth->next = third;
+
+    cout << hasCycle(head);
     cout << endl;
 }
