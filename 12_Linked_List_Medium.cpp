@@ -198,6 +198,32 @@ ListNode *removeNthFromEnd(ListNode *head, int n)
     delete (removeNode);
     return head;
 }
+ListNode *deleteMiddle(ListNode *head)
+{
+    if (head == nullptr || head->next == nullptr)
+        return nullptr;
+    ListNode *temp = head;
+    int len = 1;
+    while (temp->next != nullptr)
+    {
+        len++;
+        temp = temp->next;
+    }
+
+    ListNode *remove = head;
+    int count = (len / 2);
+
+    while (count > 1 && remove->next != nullptr)
+    {
+        remove = remove->next;
+        count--;
+    }
+    ListNode *removeNode = remove->next;
+    remove->next = remove->next->next;
+    delete (removeNode);
+    return head;
+}
+
 void printList(ListNode *head)
 {
     ListNode *temp = head;
@@ -224,7 +250,7 @@ int main()
     // Create a loop
     // fifth->next = third;
     printList(head);
-    head = removeNthFromEnd(head, 3);
+    head = deleteMiddle(head);
     printList(head);
     cout << endl;
 }
