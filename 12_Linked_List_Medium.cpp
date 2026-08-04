@@ -146,21 +146,85 @@ bool isPalindrome(ListNode *head)
     return true;
 }
 
+ListNode *oddEvenList(ListNode *&head)
+{
+    if (head == nullptr || head->next == nullptr)
+        return head;
+    ListNode *odd = head;
+    ListNode *even = head->next;
+    ListNode *evenHead = head->next;
+
+    while (even != nullptr && even->next != nullptr)
+    {
+        odd->next = odd->next->next;
+        even->next = even->next->next;
+
+        odd = odd->next;
+        even = even->next;
+    }
+    odd->next = evenHead;
+    return head;
+}
+
+ListNode *removeNthFromEnd(ListNode *head, int n)
+{
+
+    ListNode *temp = head;
+    int len = 1;
+    while (temp->next != nullptr)
+    {
+        len++;
+        temp = temp->next;
+    }
+
+    ListNode *remove = head;
+    int count = len - n;
+
+    if (count == 0)
+    {
+        ListNode *node = head;
+        head = head->next;
+        delete node;
+        return head;
+    }
+
+    while (count > 1 && remove->next != nullptr)
+    {
+        remove = remove->next;
+        count--;
+    }
+    ListNode *removeNode = remove->next;
+    remove->next = remove->next->next;
+    delete (removeNode);
+    return head;
+}
+void printList(ListNode *head)
+{
+    ListNode *temp = head;
+    while (temp != nullptr)
+    {
+        cout << temp->data << " ";
+        temp = temp->next;
+    }
+    cout << endl;
+}
+
 int main()
 {
     ListNode *head = new ListNode(1);
     ListNode *second = new ListNode(2);
-    // ListNode *third = new ListNode(3);
+    ListNode *third = new ListNode(3);
     // ListNode *fourth = new ListNode(4);
-    // ListNode *fifth = new ListNode(1);
+    // ListNode *fifth = new ListNode(5);
 
     head->next = second;
-    // second->next = third;
+    second->next = third;
     // third->next = fourth;
     // fourth->next = fifth;
     // Create a loop
     // fifth->next = third;
-
-    cout << isPalindrome(head);
+    printList(head);
+    head = removeNthFromEnd(head, 3);
+    printList(head);
     cout << endl;
 }
