@@ -99,21 +99,68 @@ int findLengthOfLoop(ListNode *head)
     }
     return 0;
 }
+
+ListNode *reverseLinkedList(ListNode *head)
+{
+    if (head == nullptr || head->next == nullptr)
+    {
+        return head;
+    }
+    ListNode *newHead = reverseLinkedList(head->next);
+    ListNode *front = head->next;
+    front->next = head;
+    head->next = nullptr;
+    return newHead;
+}
+
+bool isPalindrome(ListNode *head)
+{
+    if (head == nullptr || head->next == nullptr)
+    {
+        return true;
+    }
+    ListNode *slow = head;
+    ListNode *fast = head;
+    while (fast != nullptr && fast->next != nullptr)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    if (fast != nullptr) // if the LL is odd length then skip middle node
+        slow = slow->next;
+    ListNode *newHead = reverseLinkedList(slow);
+
+    ListNode *first = head;
+    ListNode *second = newHead;
+    while (second != nullptr)
+    {
+        if (first->data != second->data)
+        {
+            reverseLinkedList(newHead);
+            return false;
+        }
+        first = first->next;
+        second = second->next;
+    }
+    reverseLinkedList(newHead);
+    return true;
+}
+
 int main()
 {
     ListNode *head = new ListNode(1);
     ListNode *second = new ListNode(2);
-    ListNode *third = new ListNode(3);
-    ListNode *fourth = new ListNode(4);
-    ListNode *fifth = new ListNode(5);
+    // ListNode *third = new ListNode(3);
+    // ListNode *fourth = new ListNode(4);
+    // ListNode *fifth = new ListNode(1);
 
     head->next = second;
-    second->next = third;
-    third->next = fourth;
-    fourth->next = fifth;
+    // second->next = third;
+    // third->next = fourth;
+    // fourth->next = fifth;
     // Create a loop
-    fifth->next = third;
+    // fifth->next = third;
 
-    cout << findLengthOfLoop(head);
+    cout << isPalindrome(head);
     cout << endl;
 }
