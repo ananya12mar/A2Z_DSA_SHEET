@@ -316,6 +316,26 @@ ListNode *sortListZeroOneTwo(ListNode *&head)
     return newHead;
 }
 
+ListNode *getIntersectionNode(ListNode *headA, ListNode *headB)
+{
+    if (headA == nullptr || headB == nullptr)
+        return nullptr;
+    ListNode *t1 = headA;
+    ListNode *t2 = headB;
+    while (t1 != t2)
+    {
+        t1 = t1->next;
+        t2 = t2->next;
+        if (t1 == t2)
+            return t1;
+        if (t1 == nullptr)
+            t1 = headB;
+        if (t2 == nullptr)
+            t2 = headA;
+    }
+    return t1;
+}
+
 void printList(ListNode *head)
 {
     ListNode *temp = head;
@@ -334,15 +354,22 @@ int main()
     ListNode *third = new ListNode(0);
     ListNode *fourth = new ListNode(2);
     ListNode *fifth = new ListNode(0);
-
+    ListNode *head2 = new ListNode(5);
+    ListNode *second2 = new ListNode(6);
+    ListNode *third2 = new ListNode(8);
     head->next = second;
     second->next = third;
     third->next = fourth;
     fourth->next = fifth;
+
+    head2->next = second2;
+    second2->next = third2;
+    third2->next = fourth;
     // Create a loop
     // fifth->next = third;
     printList(head);
-    head = sortListZeroOneTwo(head);
+    printList(head2);
+    head = getIntersectionNode(head, head2);
     printList(head);
     cout << endl;
 }
