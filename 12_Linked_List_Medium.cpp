@@ -276,6 +276,46 @@ ListNode *sortList(ListNode *head)
     return mergeTwoLists(left, right);
 }
 
+ListNode *sortListZeroOneTwo(ListNode *&head)
+{
+    ListNode *zeroHead = new ListNode(-1);
+    ListNode *oneHead = new ListNode(-1);
+    ListNode *twoHead = new ListNode(-1);
+
+    ListNode *zero = zeroHead;
+    ListNode *one = oneHead;
+    ListNode *two = twoHead;
+
+    ListNode *temp = head;
+    while (temp != nullptr)
+    {
+        if (temp->data == 0)
+        {
+            zero->next = temp;
+            zero = zero->next;
+            temp = temp->next;
+        }
+        else if (temp->data == 1)
+        {
+            one->next = temp;
+            one = one->next;
+            temp = temp->next;
+        }
+        else
+        {
+            two->next = temp;
+            two = two->next;
+            temp = temp->next;
+        }
+    }
+    zero->next = (oneHead->next) ? oneHead->next : twoHead->next;
+    one->next = twoHead->next;
+    two->next = nullptr;
+    ListNode *newHead = zeroHead->next;
+    delete (zeroHead, oneHead, twoHead);
+    return newHead;
+}
+
 void printList(ListNode *head)
 {
     ListNode *temp = head;
@@ -290,10 +330,10 @@ void printList(ListNode *head)
 int main()
 {
     ListNode *head = new ListNode(1);
-    ListNode *second = new ListNode(3);
-    ListNode *third = new ListNode(2);
-    ListNode *fourth = new ListNode(4);
-    ListNode *fifth = new ListNode(5);
+    ListNode *second = new ListNode(1);
+    ListNode *third = new ListNode(0);
+    ListNode *fourth = new ListNode(2);
+    ListNode *fifth = new ListNode(0);
 
     head->next = second;
     second->next = third;
@@ -302,7 +342,7 @@ int main()
     // Create a loop
     // fifth->next = third;
     printList(head);
-    head = sortList(head);
+    head = sortListZeroOneTwo(head);
     printList(head);
     cout << endl;
 }
