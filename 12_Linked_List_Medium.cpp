@@ -224,6 +224,58 @@ ListNode *deleteMiddle(ListNode *head)
     return head;
 }
 
+ListNode *mergeTwoLists(ListNode *list1, ListNode *list2)
+{
+    ListNode *dummyNode = new ListNode(-1);
+    ListNode *temp = dummyNode;
+    while (list1 != nullptr && list2 != nullptr)
+    {
+        if (list1->data < list2->data)
+        {
+            temp->next = list1;
+            temp = list1;
+            list1 = list1->next;
+        }
+        else
+        {
+            temp->next = list2;
+            temp = list2;
+            list2 = list2->next;
+        }
+    }
+    if (list1)
+        temp->next = list1;
+    else
+        temp->next = list2;
+    return dummyNode->next;
+}
+
+ListNode *findMiddle(ListNode *head)
+{
+    ListNode *slow = head;
+    ListNode *fast = head->next;
+    while (fast != nullptr && fast->next != nullptr)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    return slow;
+}
+
+ListNode *sortList(ListNode *head)
+{
+    if (head == nullptr || head->next == nullptr)
+        return head;
+    ListNode *middle = findMiddle(head);
+    ListNode *right = middle->next;
+    middle->next = nullptr;
+    ListNode *left = head;
+
+    left = sortList(left);
+    right = sortList(right);
+    return mergeTwoLists(left, right);
+}
+
 void printList(ListNode *head)
 {
     ListNode *temp = head;
@@ -238,19 +290,19 @@ void printList(ListNode *head)
 int main()
 {
     ListNode *head = new ListNode(1);
-    ListNode *second = new ListNode(2);
-    ListNode *third = new ListNode(3);
-    // ListNode *fourth = new ListNode(4);
-    // ListNode *fifth = new ListNode(5);
+    ListNode *second = new ListNode(3);
+    ListNode *third = new ListNode(2);
+    ListNode *fourth = new ListNode(4);
+    ListNode *fifth = new ListNode(5);
 
     head->next = second;
     second->next = third;
-    // third->next = fourth;
-    // fourth->next = fifth;
+    third->next = fourth;
+    fourth->next = fifth;
     // Create a loop
     // fifth->next = third;
     printList(head);
-    head = deleteMiddle(head);
+    head = sortList(head);
     printList(head);
     cout << endl;
 }
