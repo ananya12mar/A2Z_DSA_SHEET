@@ -336,6 +336,28 @@ ListNode *getIntersectionNode(ListNode *headA, ListNode *headB)
     return t1;
 }
 
+ListNode *addOne(ListNode *head)
+{
+    head = reverseList(head);
+    ListNode *current = head;
+    int carry = 1;
+    while (current && carry)
+    {
+        int sum = current->data + carry;
+        current->data = sum % 10;
+        carry = sum / 10;
+        // If there's no next node and we still have a carry, append a new node
+        if (!current->next && carry)
+        {
+            current->next = new ListNode(carry);
+            carry = 0;
+        }
+        current = current->next;
+    }
+    head = reverseList(head);
+    return head;
+}
+
 void printList(ListNode *head)
 {
     ListNode *temp = head;
@@ -353,23 +375,15 @@ int main()
     ListNode *second = new ListNode(1);
     ListNode *third = new ListNode(0);
     ListNode *fourth = new ListNode(2);
-    ListNode *fifth = new ListNode(0);
-    ListNode *head2 = new ListNode(5);
-    ListNode *second2 = new ListNode(6);
-    ListNode *third2 = new ListNode(8);
+    ListNode *fifth = new ListNode(9);
     head->next = second;
     second->next = third;
     third->next = fourth;
     fourth->next = fifth;
-
-    head2->next = second2;
-    second2->next = third2;
-    third2->next = fourth;
     // Create a loop
     // fifth->next = third;
     printList(head);
-    printList(head2);
-    head = getIntersectionNode(head, head2);
+    head = addOne(head);
     printList(head);
     cout << endl;
 }
