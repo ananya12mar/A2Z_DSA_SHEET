@@ -125,6 +125,27 @@ vector<vector<int>> findPairsWithGivenSum(ListNode *head, int target)
     return ans;
 }
 
+ListNode *removeDuplicates(ListNode *head)
+{
+    ListNode *temp = head;
+    ListNode *nextNode;
+    while (temp != nullptr && temp->next != nullptr)
+    {
+        nextNode = temp->next;
+        while (nextNode != nullptr && nextNode->data == temp->data)
+        {
+            ListNode *duplicate = nextNode;
+            nextNode = nextNode->next;
+            delete (duplicate);
+        }
+        temp->next = nextNode;
+        if (nextNode)
+            nextNode->prev = temp;
+        temp = temp->next;
+    }
+    return head;
+}
+
 void printDLL(ListNode *head)
 {
     ListNode *temp = head;
@@ -159,18 +180,18 @@ void printDLLbackwards(ListNode *head)
 int main()
 {
     ListNode *head = new ListNode(4);
-    head = insertBeforeHead(head, 3);
+    head = insertBeforeHead(head, 4);
     head = insertBeforeHead(head, 1);
-    head = insertBeforeHead(head, 0);
+    head = insertBeforeHead(head, 1);
     printDLL(head);
 
-    vector<vector<int>> ans = findPairsWithGivenSum(head, 4);
-    for (auto v : ans)
-    {
-        cout << v[0] << " " << v[1] << endl;
-    }
+    // vector<vector<int>> ans = findPairsWithGivenSum(head, 4);
+    // for (auto v : ans)
+    // {
+    //     cout << v[0] << " " << v[1] << endl;
+    // }
 
-    // head = deleteAllOccurrences(head, 5);
-    // printDLL(head);
+    head = removeDuplicates(head);
+    printDLL(head);
     // printDLLbackwards(head);
 }
