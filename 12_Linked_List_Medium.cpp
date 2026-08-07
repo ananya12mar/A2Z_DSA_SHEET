@@ -358,6 +358,33 @@ ListNode *addOne(ListNode *head)
     return head;
 }
 
+ListNode *addTwoNumbers(ListNode *&linkedList1, ListNode *&linkedList2)
+{
+    ListNode *dummy = new ListNode();
+    ListNode *temp = dummy;
+    int carry = 0;
+    while (linkedList1 != nullptr || linkedList2 != nullptr || carry)
+    {
+        int sum = 0;
+        if (linkedList1 != nullptr)
+        {
+            sum += linkedList1->data;
+            linkedList1 = linkedList1->next;
+        }
+        if (linkedList2 != nullptr)
+        {
+            sum += linkedList2->data;
+            linkedList2 = linkedList2->next;
+        }
+        sum += carry;
+        carry = sum / 10;
+        ListNode *node = new ListNode(sum % 10);
+        temp->next = node;
+        temp = temp->next;
+    }
+    return dummy->next;
+}
+
 void printList(ListNode *head)
 {
     ListNode *temp = head;
@@ -371,19 +398,23 @@ void printList(ListNode *head)
 
 int main()
 {
-    ListNode *head = new ListNode(1);
-    ListNode *second = new ListNode(1);
-    ListNode *third = new ListNode(0);
-    ListNode *fourth = new ListNode(2);
+    ListNode *head = new ListNode(9);
+    ListNode *second = new ListNode(9);
+
+    ListNode *third = new ListNode(9);
+    ListNode *fourth = new ListNode(9);
     ListNode *fifth = new ListNode(9);
+
     head->next = second;
-    second->next = third;
+    // second->next = third;
     third->next = fourth;
     fourth->next = fifth;
     // Create a loop
     // fifth->next = third;
     printList(head);
-    head = addOne(head);
+    printList(third);
+
+    head = addTwoNumbers(head, third);
     printList(head);
     cout << endl;
 }
