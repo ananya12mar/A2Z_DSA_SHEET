@@ -62,6 +62,34 @@ ListNode *reverseDLL(ListNode *head)
     return tempHead;
 }
 
+ListNode *deleteAllOccurrences(ListNode *head, int target)
+{
+    ListNode *temp = head;
+    ListNode *nextNode;
+    ListNode *prevNode;
+    while (temp != nullptr)
+    {
+        if (temp->data == target)
+        {
+            if (temp == head)
+                head = head->next;
+
+            nextNode = temp->next;
+            prevNode = temp->prev;
+
+            if (nextNode)
+                nextNode->prev = prevNode;
+            if (prevNode)
+                prevNode->next = nextNode;
+            delete (temp);
+            temp = nextNode;
+        }
+        else
+            temp = temp->next;
+    }
+    return head;
+}
+
 void printDLL(ListNode *head)
 {
     ListNode *temp = head;
@@ -100,9 +128,8 @@ int main()
     head = insertBeforeHead(head, 4);
     head = insertBeforeHead(head, 5);
 
-    head = deleteHead(head);
     printDLL(head);
-    reverseDLL(head);
+    head = deleteAllOccurrences(head, 5);
     printDLL(head);
     // printDLLbackwards(head);
 }
