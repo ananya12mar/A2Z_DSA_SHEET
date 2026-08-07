@@ -385,6 +385,45 @@ ListNode *addTwoNumbers(ListNode *&linkedList1, ListNode *&linkedList2)
     return dummy->next;
 }
 
+ListNode *findKthNode(ListNode *temp, int k)
+{
+    k -= 1;
+    while (temp != nullptr && k > 0)
+    {
+        k--;
+        temp = temp->next;
+    }
+    return temp;
+}
+
+ListNode *reverseKGroup(ListNode *head, int k)
+{
+    ListNode *temp = head;
+    ListNode *kthNode;
+    ListNode *prevNode;
+    ListNode *nextNode;
+    while (temp != nullptr)
+    {
+        kthNode = findKthNode(temp, k);
+        if (kthNode == nullptr)
+        {
+            if (prevNode)
+                prevNode->next = temp;
+            break;
+        }
+        nextNode = kthNode->next;
+        kthNode->next = nullptr;
+        reverseList(temp);
+        if (temp == head)
+            head = kthNode;
+        else
+            prevNode->next = kthNode;
+        prevNode = temp;
+        temp = nextNode;
+    }
+    return head;
+}
+
 void printList(ListNode *head)
 {
     ListNode *temp = head;
@@ -398,23 +437,21 @@ void printList(ListNode *head)
 
 int main()
 {
-    ListNode *head = new ListNode(9);
-    ListNode *second = new ListNode(9);
-
-    ListNode *third = new ListNode(9);
-    ListNode *fourth = new ListNode(9);
-    ListNode *fifth = new ListNode(9);
+    ListNode *head = new ListNode(1);
+    ListNode *second = new ListNode(2);
+    ListNode *third = new ListNode(3);
+    ListNode *fourth = new ListNode(4);
+    ListNode *fifth = new ListNode(5);
 
     head->next = second;
-    // second->next = third;
+    second->next = third;
     third->next = fourth;
     fourth->next = fifth;
     // Create a loop
     // fifth->next = third;
-    printList(head);
-    printList(third);
 
-    head = addTwoNumbers(head, third);
+    printList(head);
+    head = reverseKGroup(head, 3);
     printList(head);
     cout << endl;
 }
