@@ -85,6 +85,25 @@ void reverse(int arr[], int n)
         end--;
     }
 }
+
+int reverseNumber(int x)
+{
+    int ans = 0;
+    while (x != 0)
+    {
+        int digit = x % 10;
+
+        // Check for overflow/underflow before updating ans
+        if ((ans > INT_MAX / 10) || (ans < INT_MIN / 10))
+        {
+            return 0;
+        }
+        ans = ans * 10 + digit;
+        x = x / 10;
+    }
+    return ans;
+}
+
 bool palindromeCheck(string &s)
 {
     int start = 0;
@@ -239,17 +258,17 @@ int main()
 {
     int n;
     cin >> n;
-    vector<int> arr;
-    for (int i = 0; i < n; i++)
-    {
-        int x;
-        cin >> x;
-        arr.push_back(x);
-    }
-    vector<int> res = mergeSort(arr);
-    for (auto v : res)
-    {
-        cout << v << " ";
-    }
-    cout << endl;
+    // vector<int> arr;
+    // for (int i = 0; i < n; i++)
+    // {
+    //     int x;
+    //     cin >> x;
+    //     arr.push_back(x);
+    // }
+    // vector<int> res = mergeSort(arr);
+    // for (auto v : res)
+    // {
+    //     cout << v << " ";
+    // }
+    cout << reverseNumber(n) << endl;
 }
