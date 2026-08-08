@@ -62,6 +62,23 @@ ListNode *reverseDLL(ListNode *head)
     return tempHead;
 }
 
+ListNode *reverseDLL2(ListNode *head)
+{
+    if (head == nullptr || head->next == nullptr)
+        return head;
+    ListNode *curr = head;
+    while (curr != nullptr)
+    {
+        ListNode *temp = curr->next;
+        curr->next = curr->prev;
+        curr->prev = temp;
+
+        head = curr;
+        curr = temp;
+    }
+    return head;
+}
+
 ListNode *deleteAllOccurrences(ListNode *head, int target)
 {
     ListNode *temp = head;
