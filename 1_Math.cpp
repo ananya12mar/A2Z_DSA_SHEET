@@ -119,6 +119,18 @@ bool palindromeCheck(string &s)
     }
     return true;
 }
+
+bool isPalindrome(int x)
+{
+    if (x < 0)
+        return false;
+    int rev = reverseNumber(x);
+    if (rev == x)
+        return true;
+    else
+        return false;
+}
+
 int fib(int n)
 {
     if (n == 0)
