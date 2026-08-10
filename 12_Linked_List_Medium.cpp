@@ -8,9 +8,10 @@ public:
     int data;
     ListNode *prev;
     ListNode *next;
-    ListNode() : data(0), prev(nullptr), next(nullptr) {}
-    ListNode(int x) : data(x), prev(nullptr), next(nullptr) {}
-    ListNode(int x, ListNode *prev, ListNode *next) : data(x), prev(prev), next(next) {}
+    ListNode *child;
+    ListNode() : data(0), prev(nullptr), next(nullptr), child(nullptr) {}
+    ListNode(int x) : data(x), prev(nullptr), next(nullptr), child(nullptr) {}
+    ListNode(int x, ListNode *prev, ListNode *next) : data(x), prev(prev), next(next), child(nullptr) {}
 };
 
 // Tortoise Hare method
@@ -456,6 +457,44 @@ ListNode *rotateRight(ListNode *head, int k)
     return head;
 }
 
+ListNode *merge(ListNode *&list1, ListNode *list2)
+{
+    ListNode *dummyNode = new ListNode(-1);
+    ListNode *res = dummyNode;
+    while (list1 != nullptr && list2 != nullptr)
+    {
+        if (list1->data < list2->data)
+        {
+            res->child = list1;
+            res = list1;
+            list1 = list1->child;
+        }
+        else
+        {
+            res->child = list2;
+            res = list2;
+            list2 = list2->child;
+        }
+        res->next = nullptr;
+    }
+    if (list1)
+        res->child = list1;
+    else
+        res->child = list2;
+    if (dummyNode->child)
+        dummyNode->child->next = nullptr;
+    return dummyNode->child;
+}
+
+ListNode *flattenLinkedList(ListNode *&head)
+{
+    if (head == nullptr || head->next == nullptr)
+        return head;
+    ListNode *mergedHead = flattenLinkedList(head->next);
+    head = merge(head, mergedHead);
+    return head;
+}
+
 void printList(ListNode *head)
 {
     ListNode *temp = head;
@@ -467,6 +506,17 @@ void printList(ListNode *head)
     cout << endl;
 }
 
+void printListChild(ListNode *head)
+{
+    ListNode *temp = head;
+    while (temp != nullptr)
+    {
+        cout << temp->data << " ";
+        temp = temp->child;
+    }
+    cout << endl;
+}
+
 int main()
 {
     ListNode *head = new ListNode(1);
@@ -474,16 +524,22 @@ int main()
     ListNode *third = new ListNode(3);
     ListNode *fourth = new ListNode(4);
     ListNode *fifth = new ListNode(5);
+    ListNode *sixth = new ListNode(6);
+    ListNode *seventh = new ListNode(7);
+    ListNode *eighth = new ListNode(8);
 
     head->next = second;
-    second->next = third;
-    third->next = fourth;
-    fourth->next = fifth;
+    second->next = fourth;
+    second->child = third;
+    third->child = fifth;
+    fifth->child = eighth;
+    fourth->child = sixth;
+    sixth->child = seventh;
     // Create a loop
     // fifth->next = third;
 
-    printList(head);
-    head = rotateRight(head, 3);
-    printList(head);
+    // printList(head);
+    head = flattenLinkedList(head);
+    printListChild(head);
     cout << endl;
 }
