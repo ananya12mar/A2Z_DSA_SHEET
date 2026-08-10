@@ -424,6 +424,38 @@ ListNode *reverseKGroup(ListNode *head, int k)
     return head;
 }
 
+ListNode *rotateRight(ListNode *head, int k)
+{
+    if (head == nullptr || head->next == nullptr)
+        return head;
+    int len = 1;
+    ListNode *headNode = head;
+    ListNode *temp = head;
+    while (temp->next != nullptr)
+    {
+        len++;
+        temp = temp->next;
+    }
+    ListNode *last = temp;
+    int rotate = len - (k % len);
+
+    if (rotate == len)
+    {
+        return head;
+    }
+    temp = head;
+    while (rotate > 1)
+    {
+        rotate--;
+        temp = temp->next;
+    }
+    head = temp->next;
+    temp->next = nullptr;
+    last->next = headNode;
+
+    return head;
+}
+
 void printList(ListNode *head)
 {
     ListNode *temp = head;
@@ -451,7 +483,7 @@ int main()
     // fifth->next = third;
 
     printList(head);
-    head = reverseKGroup(head, 3);
+    head = rotateRight(head, 3);
     printList(head);
     cout << endl;
 }
