@@ -496,7 +496,7 @@ ListNode *flattenLinkedList(ListNode *&head)
     return head;
 }
 
-ListNode *insertCopyNodes(ListNode *head)
+void insertCopyNodes(ListNode *head)
 {
     ListNode *temp = head;
     while (temp != nullptr)
@@ -508,7 +508,7 @@ ListNode *insertCopyNodes(ListNode *head)
     }
 }
 
-ListNode *connectRandomPointers(ListNode *head)
+void connectRandomPointers(ListNode *head)
 {
     ListNode *temp = head;
     while (temp != nullptr)
