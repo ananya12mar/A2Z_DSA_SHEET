@@ -18,7 +18,6 @@ int charToInt(string &input, int idx, long long num, int sign)
     // Recurse for next character
     return charToInt(input, idx + 1, num, sign);
 }
-
 int myAtoi(string input, int idx = 0)
 {
     // Skip leading whitespaces
@@ -38,10 +37,32 @@ int myAtoi(string input, int idx = 0)
     return charToInt(input, idx, 0, sign);
 }
 
+double power(double x, long long n)
+{
+    if (n == 0)
+        return 1.0;
+    if (n == 1)
+        return x;
+
+    if (n % 2 == 0)
+        return power(x * x, n / 2);
+    else
+        return x * power(x, n - 1);
+}
+
+double myPow(double x, long long n)
+{
+    if (n < 0)
+    {
+        return 1.0 / power(x, -n);
+    }
+    return power(x, n);
+}
+
 int main()
 {
-    string s;
-    getline(cin, s);
-    // getline(cin, t);
-    cout << myAtoi(s);
+    double x;
+    long long n;
+    cin >> x >> n;
+    cout << myPow(x, n);
 }
