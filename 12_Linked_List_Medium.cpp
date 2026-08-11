@@ -9,9 +9,10 @@ public:
     ListNode *prev;
     ListNode *next;
     ListNode *child;
-    ListNode() : data(0), prev(nullptr), next(nullptr), child(nullptr) {}
-    ListNode(int x) : data(x), prev(nullptr), next(nullptr), child(nullptr) {}
-    ListNode(int x, ListNode *prev, ListNode *next) : data(x), prev(prev), next(next), child(nullptr) {}
+    ListNode *random;
+    ListNode() : data(0), prev(nullptr), next(nullptr), child(nullptr), random(nullptr) {}
+    ListNode(int x) : data(x), prev(nullptr), next(nullptr), child(nullptr), random(nullptr) {}
+    ListNode(int x, ListNode *prev, ListNode *next) : data(x), prev(prev), next(next), child(nullptr), random(nullptr) {}
 };
 
 // Tortoise Hare method
@@ -495,6 +496,58 @@ ListNode *flattenLinkedList(ListNode *&head)
     return head;
 }
 
+ListNode *insertCopyNodes(ListNode *head)
+{
+    ListNode *temp = head;
+    while (temp != nullptr)
+    {
+        ListNode *copyNode = new ListNode(temp->data);
+        copyNode->next = temp->next;
+        temp->next = copyNode;
+        temp = temp->next->next;
+    }
+}
+
+ListNode *connectRandomPointers(ListNode *head)
+{
+    ListNode *temp = head;
+    while (temp != nullptr)
+    {
+        ListNode *copyNode = temp->next;
+        if (temp->random)
+        {
+            copyNode->random = temp->random->next;
+        }
+        else
+        {
+            copyNode->random = nullptr;
+        }
+        temp = temp->next->next;
+    }
+}
+
+ListNode *connectNextPointer(ListNode *head)
+{
+    ListNode *dummyNode = new ListNode(-1);
+    ListNode *res = dummyNode;
+    ListNode *temp = head;
+    while (temp != nullptr)
+    {
+        res->next = temp->next;
+        temp->next = temp->next->next;
+        res = res->next;
+        temp = temp->next;
+    }
+    return dummyNode->next;
+}
+
+ListNode *copyRandomList(ListNode *head)
+{
+    insertCopyNodes(head);
+    connectRandomPointers(head);
+    return connectNextPointer(head);
+}
+
 void printList(ListNode *head)
 {
     ListNode *temp = head;
@@ -517,6 +570,20 @@ void printListChild(ListNode *head)
     cout << endl;
 }
 
+void printListRandom(ListNode *head)
+{
+    ListNode *temp = head;
+    while (temp != nullptr)
+    {
+        if (temp->random)
+            cout << temp->data << "->" << temp->random->data << " ";
+        else
+            cout << " ";
+        temp = temp->next;
+    }
+    cout << endl;
+}
+
 int main()
 {
     ListNode *head = new ListNode(1);
@@ -529,17 +596,20 @@ int main()
     ListNode *eighth = new ListNode(8);
 
     head->next = second;
-    second->next = fourth;
-    second->child = third;
-    third->child = fifth;
-    fifth->child = eighth;
-    fourth->child = sixth;
-    sixth->child = seventh;
+    head->random = eighth;
+    second->next = third;
+    second->random = seventh;
+    third->next = fourth;
+    third->random = sixth;
+    fourth->next = fifth;
+    fifth->next = sixth;
+    sixth->next = seventh;
+    seventh->next = eighth;
     // Create a loop
     // fifth->next = third;
 
-    // printList(head);
-    head = flattenLinkedList(head);
-    printListChild(head);
+    printList(head);
+    head = copyRandomList(head);
+    printListRandom(head);
     cout << endl;
 }
