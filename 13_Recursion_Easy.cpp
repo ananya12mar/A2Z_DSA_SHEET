@@ -86,6 +86,34 @@ int countGoodNumbers(long long n)
     return (int)((helper(5, even, mod) * helper(4, odd, mod)) % mod);
 }
 
+void insert(stack<int> &s, int temp)
+{
+    // if the stack is empty or temp is larger than the top element
+    if (s.empty() || s.top() <= temp)
+    {
+        s.push(temp);
+        return;
+    }
+
+    int val = s.top();
+    s.pop();
+    insert(s, temp);
+    s.push(val);
+}
+
+void sortStack(stack<int> &s)
+{
+    if (!s.empty())
+    {
+        int temp = s.top();
+        s.pop();
+
+        sortStack(s);
+
+        insert(s, temp);
+    }
+}
+
 int main()
 {
     // double x;
