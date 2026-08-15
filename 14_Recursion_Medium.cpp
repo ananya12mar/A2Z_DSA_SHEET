@@ -153,25 +153,39 @@ vector<vector<int>> combinationSum2(vector<int> &candidates, int target)
     return result;
 }
 
+void generateSubsetSum(vector<int> &result, vector<int> &nums, int idx, int currSum)
+{
+    if (idx == nums.size())
+    {
+        result.push_back(currSum);
+        return;
+    }
+    generateSubsetSum(result, nums, idx + 1, currSum + nums[idx]);
+    generateSubsetSum(result, nums, idx + 1, currSum);
+}
+
+vector<int> subsetSums(vector<int> &nums)
+{
+    vector<int> result;
+    generateSubsetSum(result, nums, 0, 0);
+    sort(result.begin(), result.end());
+    return result;
+}
+
 int main()
 {
-    int n, k;
-    cin >> n >> k;
+    int n;
+    cin >> n;
     vector<int> a(n);
     for (int i = 0; i < n; i++)
     {
         cin >> a[i];
     }
-    // int res;
-    // res = checkSubsequenceSum(a, k);
-    // cout << res;
-    vector<vector<int>> ans = combinationSum2(a, k);
-    for (auto v : ans)
+    vector<int> res;
+    res = subsetSums(a);
+    // vector<vector<int>> ans = combinationSum2(a, k);
+    for (auto v : res)
     {
-        for (auto e : v)
-        {
-            cout << e << " ";
-        }
-        cout << "\n";
+        cout << v << " ";
     }
 }
