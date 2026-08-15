@@ -198,18 +198,50 @@ vector<vector<int>> subsetsWithDup(vector<int> &nums)
     return result;
 }
 
+void generateCombinationSum3(vector<vector<int>> &result, vector<int> curr, int idx, int currSum, int k)
+{
+    if (currSum == 0 && curr.size() == k)
+    {
+        result.push_back(curr);
+        return;
+    }
+
+    if (currSum <= 0 || curr.size() > k)
+        return;
+
+    for (int i = idx; i <= 9; i++)
+    {
+        if (i <= currSum)
+        {
+            curr.push_back(i);
+            generateCombinationSum3(result, curr, i + 1, currSum - i, k);
+            curr.pop_back();
+        }
+        else
+            break;
+    }
+}
+
+vector<vector<int>> combinationSum3(int k, int n)
+{
+    vector<int> curr;
+    vector<vector<int>> result;
+    generateCombinationSum3(result, curr, 1, n, k);
+    return result;
+}
+
 int main()
 {
-    int n;
-    cin >> n;
-    vector<int> a(n);
-    for (int i = 0; i < n; i++)
-    {
-        cin >> a[i];
-    }
+    int n, k;
+    cin >> n >> k;
+    // vector<int> a(n);
+    // for (int i = 0; i < n; i++)
+    // {
+    //     cin >> a[i];
+    // }
     // vector<int> res;
     // res = subsetSums(a);
-    vector<vector<int>> ans = subsetsWithDup(a);
+    vector<vector<int>> ans = combinationSum3(k, n);
     for (auto v : ans)
     {
         for (auto e : v)
