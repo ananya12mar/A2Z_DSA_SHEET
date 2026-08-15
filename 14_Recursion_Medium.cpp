@@ -172,6 +172,32 @@ vector<int> subsetSums(vector<int> &nums)
     return result;
 }
 
+void generateSubsetsWithDup(vector<vector<int>> &result, vector<int> &nums, vector<int> &curr, int idx)
+{
+    result.push_back(curr);
+
+    for (int i = idx; i < nums.size(); i++)
+    {
+        // Skip duplicates to avoid repeating combinations
+        if (i > idx && nums[i] == nums[i - 1])
+            continue;
+
+        curr.push_back(nums[i]);
+        // Recur with the updated target and next index (i + 1 to avoid repetition)
+        generateSubsetsWithDup(result, nums, curr, i + 1);
+        curr.pop_back();
+    }
+}
+
+vector<vector<int>> subsetsWithDup(vector<int> &nums)
+{
+    vector<int> curr;
+    vector<vector<int>> result;
+    sort(nums.begin(), nums.end());
+    generateSubsetsWithDup(result, nums, curr, 0);
+    return result;
+}
+
 int main()
 {
     int n;
@@ -181,11 +207,14 @@ int main()
     {
         cin >> a[i];
     }
-    vector<int> res;
-    res = subsetSums(a);
-    // vector<vector<int>> ans = combinationSum2(a, k);
-    for (auto v : res)
+    // vector<int> res;
+    // res = subsetSums(a);
+    vector<vector<int>> ans = subsetsWithDup(a);
+    for (auto v : ans)
     {
-        cout << v << " ";
+        for (auto e : v)
+            cout << e << " ";
+
+        cout << "\n";
     }
 }
