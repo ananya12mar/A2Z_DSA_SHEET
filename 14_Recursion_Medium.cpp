@@ -43,11 +43,45 @@ vector<string> generateParenthesis(int n)
     return result;
 }
 
+void generateSet(vector<vector<int>> &result, vector<int> &nums, int idx, vector<int> curr)
+{
+    if (idx == nums.size())
+    {
+        result.push_back(curr);
+        return;
+    }
+    generateSet(result, nums, idx + 1, curr);
+
+    curr.push_back(nums[idx]);
+    generateSet(result, nums, idx + 1, curr);
+
+    curr.pop_back();
+}
+vector<vector<int>> powerSet(vector<int> &nums)
+{
+    vector<vector<int>> result;
+    vector<int> curr;
+    generateSet(result, nums, 0, curr);
+    return result;
+}
+
 int main()
 {
     int n;
     cin >> n;
-    vector<string> ans = generateParenthesis(n);
+    vector<int> a(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> a[i];
+    }
+
+    vector<vector<int>> ans = powerSet(a);
     for (auto v : ans)
-        cout << v << " ";
+    {
+        for (auto e : v)
+        {
+            cout << e << " ";
+        }
+        cout << "\n";
+    }
 }
