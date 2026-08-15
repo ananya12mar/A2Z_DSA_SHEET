@@ -17,7 +17,6 @@ void generate(vector<string> &result, int n, string curr)
         generate(result, n, curr + '1');
     }
 }
-
 vector<string> generateBinaryStrings(int n)
 {
     vector<string> result;
@@ -25,11 +24,30 @@ vector<string> generateBinaryStrings(int n)
     return result;
 }
 
+void generatePara(vector<string> &result, int n, string curr, int open, int close)
+{
+    if (curr.length() == (2 * n))
+    {
+        result.push_back(curr);
+        return;
+    }
+    if (open < n)
+        generatePara(result, n, curr + '(', open + 1, close);
+    if (close < open)
+        generatePara(result, n, curr + ')', open, close + 1);
+}
+vector<string> generateParenthesis(int n)
+{
+    vector<string> result;
+    generatePara(result, n, "", 0, 0);
+    return result;
+}
+
 int main()
 {
     int n;
     cin >> n;
-    vector<string> ans = generateBinaryStrings(n);
+    vector<string> ans = generateParenthesis(n);
     for (auto v : ans)
         cout << v << " ";
 }
