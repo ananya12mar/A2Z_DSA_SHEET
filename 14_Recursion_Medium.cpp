@@ -65,23 +65,43 @@ vector<vector<int>> powerSet(vector<int> &nums)
     return result;
 }
 
+int subsequence(vector<int> &nums, int sum, int idx)
+{
+    // if sum is 0, one valid subsequence is found
+    if (sum == 0)
+        return 1;
+    // if sum is negative or index exceeds array size
+    if (sum < 0 || idx == nums.size())
+        return 0;
+
+    // Recurse by including current number or excluding it from the sum
+    return subsequence(nums, sum - nums[idx], idx + 1) + subsequence(nums, sum, idx + 1);
+}
+
+int countSubsequenceWithTargetSum(vector<int> &nums, int k)
+{
+    return subsequence(nums, k, 0);
+}
+
 int main()
 {
-    int n;
-    cin >> n;
+    int n, k;
+    cin >> n >> k;
     vector<int> a(n);
     for (int i = 0; i < n; i++)
     {
         cin >> a[i];
     }
-
-    vector<vector<int>> ans = powerSet(a);
-    for (auto v : ans)
-    {
-        for (auto e : v)
-        {
-            cout << e << " ";
-        }
-        cout << "\n";
-    }
+    int res;
+    res = countSubsequenceWithTargetSum(a, k);
+    cout << res;
+    // vector<vector<int>> ans = powerSet(a);
+    // for (auto v : ans)
+    // {
+    //     for (auto e : v)
+    //     {
+    //         cout << e << " ";
+    //     }
+    //     cout << "\n";
+    // }
 }
