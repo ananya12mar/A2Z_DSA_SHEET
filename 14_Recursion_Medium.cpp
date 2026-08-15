@@ -118,6 +118,41 @@ vector<vector<int>> combinationSum(vector<int> &candidates, int target)
     return result;
 }
 
+void generateSetSumII(vector<vector<int>> &result, vector<int> &candidates, int idx, vector<int> &curr, int sum)
+{
+    if (sum == 0)
+    {
+        result.push_back(curr);
+        return;
+    }
+
+    // Loop through the elements starting from index 'idx'
+    for (int i = idx; i < candidates.size(); i++)
+    {
+        // Skip duplicates to avoid repeating combinations
+        if (i > idx && candidates[i] == candidates[i - 1])
+            continue;
+
+        // If the current element is greater than the remaining target, break the loop
+        if (candidates[i] > sum)
+            break;
+
+        curr.push_back(candidates[i]);
+        // Recur with the updated target and next index (i + 1 to avoid repetition)
+        generateSetSumII(result, candidates, i + 1, curr, sum - candidates[i]);
+        curr.pop_back();
+    }
+}
+
+vector<vector<int>> combinationSum2(vector<int> &candidates, int target)
+{
+    vector<vector<int>> result;
+    vector<int> curr;
+    sort(candidates.begin(), candidates.end());
+    generateSetSumII(result, candidates, 0, curr, target);
+    return result;
+}
+
 int main()
 {
     int n, k;
@@ -130,7 +165,7 @@ int main()
     // int res;
     // res = checkSubsequenceSum(a, k);
     // cout << res;
-    vector<vector<int>> ans = combinationSum(a, k);
+    vector<vector<int>> ans = combinationSum2(a, k);
     for (auto v : ans)
     {
         for (auto e : v)
