@@ -92,6 +92,32 @@ bool checkSubsequenceSum(vector<int> &nums, int k)
         return false;
 }
 
+void generateSetSum(vector<vector<int>> &result, vector<int> &candidates, int idx, vector<int> curr, int sum)
+{
+    if (idx == candidates.size())
+    {
+        if (sum == 0)
+            result.push_back(curr);
+        return;
+    }
+    if (candidates[idx] <= sum)
+    {
+        curr.push_back(candidates[idx]);
+        // take the element and don't increase index as this element can be taken again
+        generateSetSum(result, candidates, idx, curr, sum - candidates[idx]);
+        curr.pop_back();
+    }
+    generateSetSum(result, candidates, idx + 1, curr, sum);
+}
+
+vector<vector<int>> combinationSum(vector<int> &candidates, int target)
+{
+    vector<vector<int>> result;
+    vector<int> curr;
+    generateSetSum(result, candidates, 0, curr, target);
+    return result;
+}
+
 int main()
 {
     int n, k;
@@ -101,16 +127,16 @@ int main()
     {
         cin >> a[i];
     }
-    int res;
-    res = checkSubsequenceSum(a, k);
-    cout << res;
-    // vector<vector<int>> ans = powerSet(a);
-    // for (auto v : ans)
-    // {
-    //     for (auto e : v)
-    //     {
-    //         cout << e << " ";
-    //     }
-    //     cout << "\n";
-    // }
+    // int res;
+    // res = checkSubsequenceSum(a, k);
+    // cout << res;
+    vector<vector<int>> ans = combinationSum(a, k);
+    for (auto v : ans)
+    {
+        for (auto e : v)
+        {
+            cout << e << " ";
+        }
+        cout << "\n";
+    }
 }
