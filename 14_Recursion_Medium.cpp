@@ -83,6 +83,15 @@ int countSubsequenceWithTargetSum(vector<int> &nums, int k)
     return subsequence(nums, k, 0);
 }
 
+bool checkSubsequenceSum(vector<int> &nums, int k)
+{
+    int ans = subsequence(nums, k, 0);
+    if (ans)
+        return true;
+    else
+        return false;
+}
+
 int main()
 {
     int n, k;
@@ -93,7 +102,7 @@ int main()
         cin >> a[i];
     }
     int res;
-    res = countSubsequenceWithTargetSum(a, k);
+    res = checkSubsequenceSum(a, k);
     cout << res;
     // vector<vector<int>> ans = powerSet(a);
     // for (auto v : ans)
