@@ -230,23 +230,38 @@ vector<vector<int>> combinationSum3(int k, int n)
     return result;
 }
 
+void generateLetterCombinations(int idx, string curr, vector<string> &result, const string &digits)
+{
+    static const vector<string> letters = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+
+    if (idx == digits.size())
+    {
+        result.push_back(curr);
+        return;
+    }
+
+    int digit = digits[idx] - '0';
+    for (int i = 0; i < letters[digit].length(); i++)
+    {
+        generateLetterCombinations(idx + 1, curr + letters[digit][i], result, digits);
+    }
+}
+
+vector<string> letterCombinations(string digits)
+{
+    vector<string> result;
+    generateLetterCombinations(0, "", result, digits);
+    return result;
+}
+
 int main()
 {
-    int n, k;
-    cin >> n >> k;
-    // vector<int> a(n);
-    // for (int i = 0; i < n; i++)
-    // {
-    //     cin >> a[i];
-    // }
-    // vector<int> res;
-    // res = subsetSums(a);
-    vector<vector<int>> ans = combinationSum3(k, n);
+    string s;
+    cin >> s;
+    vector<string> ans = letterCombinations(s);
     for (auto v : ans)
     {
-        for (auto e : v)
-            cout << e << " ";
-
+        cout << v;
         cout << "\n";
     }
 }
