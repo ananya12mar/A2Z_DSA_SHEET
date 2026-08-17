@@ -38,9 +38,17 @@ int setRightmostUnsetBit(int n)
     return n | (n + 1);
 }
 
+void swap(int &a, int &b)
+{
+    a = a ^ b;
+    b = a ^ b;
+    a = a ^ b;
+}
+
 int main()
 {
     int n, i;
     cin >> n >> i;
-    cout << countSetBits(n);
+    swap(n, i);
+    cout << n << " " << i;
 }
