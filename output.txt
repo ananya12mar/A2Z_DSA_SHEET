@@ -1,9 +1,2 @@
-ad
-ae
-af
-bd
-be
-bf
-cd
-ce
-cf
+b a a 
+b aa 
