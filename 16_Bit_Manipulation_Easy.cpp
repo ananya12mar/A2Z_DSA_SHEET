@@ -33,6 +33,11 @@ int countSetBits(int n)
     return count;
 }
 
+int setRightmostUnsetBit(int n)
+{
+    return n | (n + 1);
+}
+
 int main()
 {
     int n, i;
