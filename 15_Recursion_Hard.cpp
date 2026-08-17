@@ -44,16 +44,62 @@ vector<vector<string>> partition(string s)
     return result;
 }
 
+int x[4] = {0, 0, 1, -1};
+int y[4] = {1, -1, 0, 0};
+
+// DFS function to search for the word
+bool dfs(vector<vector<char>> &board, string &word, int i, int j, int idx)
+{
+    if (idx == word.size())
+        return true;
+
+    if (i < 0 || j < 0 || i >= board.size() || j >= board[0].size() || board[i][j] != word[idx])
+    {
+        return false;
+    }
+
+    char temp = board[i][j];
+    board[i][j] = '#';
+    bool found = 0;
+    for (int k = 0; k < 4; k++)
+    {
+        found = found || dfs(board, word, i + x[k], j + y[k], idx + 1);
+    }
+
+    // Restore the character (backtracking)
+    board[i][j] = temp;
+
+    return found;
+}
+
+bool exist(vector<vector<char>> &board, string word)
+{
+    int rows = board.size();
+    int cols = board[0].size();
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            // Start DFS if first letter matches
+            if (dfs(board, word, i, j, 0))
+            {
+                return true;
+            }
+        }
+    }
+    // If no path found, return false
+    return false;
+}
+
 int main()
 {
-    string s;
-    cin >> s;
-    vector<vector<string>> ans = partition(s);
-    for (auto v : ans)
-    {
-        for (auto e : v)
-            cout << e << " ";
-
-        cout << "\n";
-    }
+    vector<vector<char>> board = {
+        {'A', 'B', 'C', 'E'},
+        {'S', 'F', 'C', 'S'},
+        {'A', 'D', 'E', 'E'}};
+    string word;
+    cin >> word;
+    bool ans = exist(board, word);
+    cout << ans;
 }
