@@ -15,9 +15,16 @@ bool isOdd(int n)
     return false;
 }
 
+bool isPowerOfTwo(int n)
+{
+    if (n > 0 && !(n & n - 1))
+        return true;
+    return false;
+}
+
 int main()
 {
     int n, i;
     cin >> n >> i;
-    cout << isOdd(n);
+    cout << isPowerOfTwo(n);
 }
