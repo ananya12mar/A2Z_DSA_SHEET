@@ -8,9 +8,16 @@ bool checkIthBit(int n, int i)
     return false;
 }
 
+bool isOdd(int n)
+{
+    if (n & 1 << 0)
+        return true;
+    return false;
+}
+
 int main()
 {
     int n, i;
     cin >> n >> i;
-    cout << checkIthBit(n, i);
+    cout << isOdd(n);
 }
