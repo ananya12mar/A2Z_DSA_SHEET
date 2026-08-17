@@ -22,9 +22,20 @@ bool isPowerOfTwo(int n)
     return false;
 }
 
+int countSetBits(int n)
+{
+    int count = 0;
+    while (n > 0)
+    {
+        n = n & n - 1; // Turn off the rightmost set bit
+        count++;
+    }
+    return count;
+}
+
 int main()
 {
     int n, i;
     cin >> n >> i;
-    cout << isPowerOfTwo(n);
+    cout << countSetBits(n);
 }
