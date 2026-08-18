@@ -24,6 +24,26 @@ int singleNumber(vector<int> &nums)
     return ans;
 }
 
+vector<vector<int>> powerSet(vector<int> &nums)
+{
+    int len = nums.size();
+    int subsets = 1 << len; // 2^len
+    vector<vector<int>> result;
+    for (int i = 0; i < subsets; i++)
+    {
+        vector<int> v;
+        for (int j = 0; j < len; j++)
+        {
+            if (i & (1 << j))
+            {
+                v.push_back(nums[j]);
+            }
+        }
+        result.push_back(v);
+    }
+    return result;
+}
+
 int main()
 {
     // int n, m;
