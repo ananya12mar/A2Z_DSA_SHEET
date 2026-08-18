@@ -60,14 +60,40 @@ int findRangeXOR(int l, int r)
     return XORtillN(l - 1) ^ XORtillN(r);
 }
 
+vector<int> singleNumberIII(vector<int> &nums)
+{
+    int x = 0;
+    for (auto v : nums)
+        x ^= v;
+
+    int idx = 0;
+    while (x > 0)
+    {
+        if (x & (1 << idx))
+            break;
+        idx++;
+    }
+
+    int zero = 0;
+    int one = 0;
+    for (auto v : nums)
+    {
+        if (v & (1 << idx))
+            one ^= v;
+        else
+            zero ^= v;
+    }
+    return {one, zero};
+}
+
 int main()
 {
-    // int n, m;
-    // cin >> n;
-    // vector<int> nums(n);
-    // for (int i = 0; i < n; i++)
-    //     cin >> nums[i];
-    // vector<int> ans = singleNumberIII(nums);
-    // for (auto v : ans)
-    //     cout << v << " ";
+    int n, m;
+    cin >> n;
+    vector<int> nums(n);
+    for (int i = 0; i < n; i++)
+        cin >> nums[i];
+    vector<int> ans = singleNumberIII(nums);
+    for (auto v : ans)
+        cout << v << " ";
 }
