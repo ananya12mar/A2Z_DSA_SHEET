@@ -14,6 +14,16 @@ int minBitsFlip(int start, int goal)
     return ans;
 }
 
+int singleNumber(vector<int> &nums)
+{
+    int ans = 0;
+    for (auto v : nums)
+    {
+        ans ^= v;
+    }
+    return ans;
+}
+
 int main()
 {
     // int n, m;
