@@ -38,19 +38,32 @@ vector<vector<int>> primeFactors(vector<int> &queries)
     return result;
 }
 
+vector<int> divisors(int n)
+{
+    vector<int> factors;
+    for (int i = 1; i * i <= n; i++)
+    {
+        if (n % i == 0)
+        {
+            factors.push_back(i);
+            factors.push_back(n / i);
+        }
+    }
+    sort(factors.begin(), factors.end());
+    return factors;
+}
+
 int main()
 {
     int n;
     cin >> n;
     // cout << isPrime(n) << endl;
-    vector<int> nums(n);
-    for (int i = 0; i < n; i++)
-        cin >> nums[i];
-    vector<vector<int>> ans = primeFactors(nums);
+    // vector<int> nums(n);
+    // for (int i = 0; i < n; i++)
+    //     cin >> nums[i];
+    vector<int> ans = divisors(n);
     for (auto v : ans)
     {
-        for (auto e : v)
-            cout << e << " ";
-        cout << "\n";
+        cout << v << " ";
     }
 }
