@@ -100,6 +100,34 @@ vector<int> primesInRange(vector<vector<int>> &queries)
     return result;
 }
 
+int countPrimes(int n)
+{
+    // Sieve of eratosthenes
+    if (n <= 2)
+        return 0;
+
+    vector<char> isPrime(n, 1);
+    isPrime[0] = isPrime[1] = 0;
+
+    int limit = (int)floor(sqrt(n - 1));
+
+    for (int p = 2; p <= limit; ++p)
+    {
+        if (!isPrime[p])
+            continue;
+
+        long long start = 1LL * p * p;
+        for (int i = (int)start; i < n; i += p)
+            isPrime[i] = 0;
+    }
+
+    int cnt = 0;
+    for (int i = 2; i < n; ++i)
+        cnt += isPrime[i];
+
+    return cnt;
+}
+
 int main()
 {
     int n;
