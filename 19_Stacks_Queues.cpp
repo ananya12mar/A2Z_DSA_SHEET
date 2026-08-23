@@ -249,36 +249,93 @@ public:
     }
 };
 
+struct Node
+{
+    int val;
+    Node *next;
+    Node(int d)
+    {
+        val = d;
+        next = NULL;
+    }
+};
+class LinkedListStack
+{
+    Node *head;
+    int size;
+
+public:
+    LinkedListStack()
+    {
+        head = NULL;
+        size = 0;
+    }
+
+    void push(int x)
+    {
+        Node *node = new Node(x);
+        node->next = head;
+        head = node;
+        size++;
+    }
+
+    int pop()
+    {
+        if (head == NULL)
+            return -1;
+
+        int value = head->val;
+        Node *temp = head;
+        head = head->next;
+        delete (temp);
+        size--;
+        return value;
+    }
+
+    int top()
+    {
+        if (head == NULL)
+            return -1;
+
+        return head->val;
+    }
+
+    bool isEmpty()
+    {
+        return size == 0;
+    }
+};
+
 int main()
 {
-    StackQueue q;
+    LinkedListStack st;
 
     // List of commands
-    vector<string> commands = {"StackQueue", "push", "push",
-                               "pop", "peek", "isEmpty"};
+    vector<string> commands = {"LinkedListStack", "push", "push",
+                               "pop", "top", "isEmpty"};
     // List of inputs
-    vector<vector<int>> inputs = {{}, {4}, {8}, {}, {}, {}};
+    vector<vector<int>> inputs = {{}, {3}, {7}, {}, {}, {}};
 
     for (int i = 0; i < commands.size(); ++i)
     {
         if (commands[i] == "push")
         {
-            q.push(inputs[i][0]);
+            st.push(inputs[i][0]);
             cout << "null ";
         }
         else if (commands[i] == "pop")
         {
-            cout << q.pop() << " ";
+            cout << st.pop() << " ";
         }
-        else if (commands[i] == "peek")
+        else if (commands[i] == "top")
         {
-            cout << q.peek() << " ";
+            cout << st.top() << " ";
         }
         else if (commands[i] == "isEmpty")
         {
-            cout << (q.isEmpty() ? "true" : "false") << " ";
+            cout << (st.isEmpty() ? "true" : "false") << " ";
         }
-        else if (commands[i] == "StackQueue")
+        else if (commands[i] == "LinkedListStack")
         {
             cout << "null ";
         }
