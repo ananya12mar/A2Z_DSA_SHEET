@@ -135,33 +135,79 @@ public:
     }
 };
 
+class QueueStack
+{
+    queue<int> q;
+
+public:
+    QueueStack()
+    {
+    }
+
+    void push(int x)
+    {
+        int s = q.size();
+        q.push(x);
+        for (int i = 0; i < s; i++)
+        {
+            q.push(q.front());
+            q.pop();
+        }
+    }
+
+    int pop()
+    {
+        int n = q.front();
+        q.pop();
+        return n;
+    }
+
+    int top()
+    {
+        if (q.empty())
+        {
+            cout << "Stack is empty" << endl;
+            return -1;
+        }
+        return q.front();
+    }
+
+    bool isEmpty()
+    {
+        return q.empty();
+    }
+};
+
 int main()
 {
-    ArrayQueue queue;
-    vector<string> commands = {"ArrayQueue", "push", "push",
-                               "peek", "pop", "isEmpty"};
-    vector<vector<int>> inputs = {{}, {5}, {10}, {}, {}, {}};
+    QueueStack st;
+
+    // List of commands
+    vector<string> commands = {"QueueStack", "push", "push",
+                               "pop", "top", "isEmpty"};
+    // List of inputs
+    vector<vector<int>> inputs = {{}, {4}, {8}, {}, {}, {}};
 
     for (int i = 0; i < commands.size(); ++i)
     {
         if (commands[i] == "push")
         {
-            queue.push(inputs[i][0]);
+            st.push(inputs[i][0]);
             cout << "null ";
         }
         else if (commands[i] == "pop")
         {
-            cout << queue.pop() << " ";
+            cout << st.pop() << " ";
         }
-        else if (commands[i] == "peek")
+        else if (commands[i] == "top")
         {
-            cout << queue.peek() << " ";
+            cout << st.top() << " ";
         }
         else if (commands[i] == "isEmpty")
         {
-            cout << (queue.isEmpty() ? "true" : "false") << " ";
+            cout << (st.isEmpty() ? "true" : "false") << " ";
         }
-        else if (commands[i] == "ArrayQueue")
+        else if (commands[i] == "QueueStack")
         {
             cout << "null ";
         }
