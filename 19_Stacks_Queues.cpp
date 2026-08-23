@@ -59,32 +59,109 @@ public:
     }
 };
 
+class ArrayQueue
+{
+private:
+    int *queueArray;
+    int capacity;
+    int start;
+    int end;
+    int size;
+
+public:
+    ArrayQueue(int s = 1000)
+    {
+        capacity = s;
+        queueArray = new int[capacity];
+        start = -1;
+        end = -1;
+        size = 0;
+    }
+
+    void push(int x)
+    {
+        if (size == capacity)
+        {
+            cout << "queue is full" << endl;
+            exit(1);
+        }
+        if (end == -1)
+        {
+            start = 0;
+            end = 0;
+        }
+        else
+        {
+            end = (end + 1) % capacity;
+        }
+        queueArray[end] = x;
+        size++;
+    }
+
+    int pop()
+    {
+        if (start == -1)
+        {
+            cout << "Queue is empty" << endl;
+            exit(1);
+        }
+        int popped = queueArray[start];
+        if (size == 1)
+        {
+            start = -1;
+            end = -1;
+        }
+        else
+        {
+            start = (start + 1) % capacity;
+        }
+        size--;
+        return popped;
+    }
+
+    int peek()
+    {
+        if (start == -1)
+        {
+            cout << "Queue is empty" << endl;
+            exit(1);
+        }
+        return queueArray[start];
+    }
+
+    bool isEmpty()
+    {
+        return size == 0;
+    }
+};
+
 int main()
 {
-    ArrayStack stack;
-    vector<string> commands = {"ArrayStack", "push", "push", "top", "pop", "isEmpty"};
+    ArrayQueue queue;
+    vector<string> commands = {"ArrayQueue", "push", "push",
+                               "peek", "pop", "isEmpty"};
     vector<vector<int>> inputs = {{}, {5}, {10}, {}, {}, {}};
 
-    for (size_t i = 0; i < commands.size(); ++i)
+    for (int i = 0; i < commands.size(); ++i)
     {
         if (commands[i] == "push")
         {
-            stack.push(inputs[i][0]);
+            queue.push(inputs[i][0]);
             cout << "null ";
         }
         else if (commands[i] == "pop")
         {
-            cout << stack.pop() << " ";
+            cout << queue.pop() << " ";
         }
-        else if (commands[i] == "top")
+        else if (commands[i] == "peek")
         {
-            cout << stack.top() << " ";
+            cout << queue.peek() << " ";
         }
         else if (commands[i] == "isEmpty")
         {
-            cout << (stack.isEmpty() ? "true" : "false") << " ";
+            cout << (queue.isEmpty() ? "true" : "false") << " ";
         }
-        else if (commands[i] == "ArrayStack")
+        else if (commands[i] == "ArrayQueue")
         {
             cout << "null ";
         }
