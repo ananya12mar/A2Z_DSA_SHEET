@@ -178,13 +178,84 @@ public:
     }
 };
 
+class StackQueue
+{
+    stack<int> s1;
+    stack<int> s2;
+
+public:
+    StackQueue()
+    {
+    }
+
+    void push(int x)
+    {
+        if (s2.empty())
+        {
+            s2.push(x);
+        }
+        else
+        {
+            while (!s2.empty())
+            {
+                int f = s2.top();
+                s1.push(f);
+                s2.pop();
+            }
+            s2.push(x);
+            while (!s1.empty())
+            {
+                int f = s1.top();
+                s2.push(f);
+                s1.pop();
+            }
+        }
+    }
+
+    int pop()
+    {
+        if (s2.empty())
+        {
+            cout << "Queue is empty" << endl;
+            exit(1);
+        }
+        else
+        {
+            int f = s2.top();
+            s2.pop();
+            return f;
+        }
+    }
+
+    int peek()
+    {
+        if (s2.empty())
+        {
+            cout << "Queue is empty" << endl;
+            exit(1);
+        }
+        else
+        {
+            int f = s2.top();
+            return f;
+        }
+    }
+
+    bool isEmpty()
+    {
+        if (s2.empty())
+            return true;
+        return false;
+    }
+};
+
 int main()
 {
-    QueueStack st;
+    StackQueue q;
 
     // List of commands
-    vector<string> commands = {"QueueStack", "push", "push",
-                               "pop", "top", "isEmpty"};
+    vector<string> commands = {"StackQueue", "push", "push",
+                               "pop", "peek", "isEmpty"};
     // List of inputs
     vector<vector<int>> inputs = {{}, {4}, {8}, {}, {}, {}};
 
@@ -192,22 +263,22 @@ int main()
     {
         if (commands[i] == "push")
         {
-            st.push(inputs[i][0]);
+            q.push(inputs[i][0]);
             cout << "null ";
         }
         else if (commands[i] == "pop")
         {
-            cout << st.pop() << " ";
+            cout << q.pop() << " ";
         }
-        else if (commands[i] == "top")
+        else if (commands[i] == "peek")
         {
-            cout << st.top() << " ";
+            cout << q.peek() << " ";
         }
         else if (commands[i] == "isEmpty")
         {
-            cout << (st.isEmpty() ? "true" : "false") << " ";
+            cout << (q.isEmpty() ? "true" : "false") << " ";
         }
-        else if (commands[i] == "QueueStack")
+        else if (commands[i] == "StackQueue")
         {
             cout << "null ";
         }
