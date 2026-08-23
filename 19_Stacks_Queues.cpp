@@ -386,8 +386,66 @@ bool isValid(string str)
     return st.empty();
 }
 
+class MinStack
+{
+    // use 64-bit storage to avoid overflow when computing encoded values
+    stack<long long> st;
+    long long minVal = LLONG_MAX;
+
+public:
+    MinStack() = default;
+
+    void push(int value)
+    {
+        long long v = value;
+        if (st.empty())
+        {
+            st.push(v);
+            minVal = v;
+            return;
+        }
+        if (v >= minVal)
+        {
+            st.push(v);
+        }
+        else
+        {
+            st.push(2 * v - minVal);
+            minVal = v;
+        }
+    }
+
+    void pop()
+    {
+        if (st.empty())
+            return;
+        long long p = st.top();
+        st.pop();
+        if (p < minVal)
+        {
+            // restore previous min (using 64-bit arithmetic)
+            minVal = 2 * minVal - p;
+        }
+    }
+
+    int top()
+    {
+        if (st.empty())
+            return -1;
+        long long x = st.top();
+        if (x >= minVal)
+            return (int)x;
+        return (int)minVal;
+    }
+
+    int getMin()
+    {
+        return (int)minVal;
+    }
+};
+
 int main()
 {
-    string s = "[()]";
-    cout << isValid(s) << endl;
+    // string s = "[()]";
+    // cout << isValid(s) << endl;
 }
