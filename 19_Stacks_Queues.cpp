@@ -358,40 +358,36 @@ public:
     }
 };
 
-int main()
+bool isValid(string str)
 {
-    LinkedListQueue q;
-
-    // List of commands
-    vector<string> commands = {"LinkedListQueue", "push", "push",
-                               "peek", "pop", "isEmpty"};
-    // List of inputs
-    vector<vector<int>> inputs = {{}, {3}, {7}, {}, {}, {}};
-
-    for (int i = 0; i < commands.size(); ++i)
+    stack<char> st;
+    for (auto c : str)
     {
-        if (commands[i] == "push")
+        if (c == '(' || c == '{' || c == '[')
         {
-            q.push(inputs[i][0]);
-            cout << "null ";
+            st.push(c);
         }
-        else if (commands[i] == "pop")
+        else
         {
-            cout << q.pop() << " ";
-        }
-        else if (commands[i] == "peek")
-        {
-            cout << q.peek() << " ";
-        }
-        else if (commands[i] == "isEmpty")
-        {
-            cout << (q.isEmpty() ? "true" : "false") << " ";
-        }
-        else if (commands[i] == "LinkedListQueue")
-        {
-            cout << "null ";
+            if (st.empty())
+                return 0;
+            if ((c == ')' && st.top() == '(') ||
+                (c == '}' && st.top() == '{') ||
+                (c == ']' && st.top() == '['))
+            {
+                st.pop();
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
+    return st.empty();
+}
 
-    return 0;
+int main()
+{
+    string s = "[()]";
+    cout << isValid(s) << endl;
 }
