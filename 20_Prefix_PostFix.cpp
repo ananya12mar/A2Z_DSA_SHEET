@@ -175,8 +175,32 @@ string prefixToInfix(string s)
     return st.top();
 }
 
+string postToPre(string postfix)
+{
+    int i = 0;
+    stack<string> st;
+    while (i < postfix.size())
+    {
+        if (isOperand(postfix[i]))
+        {
+            st.push(string(1, postfix[i]));
+        }
+        else
+        {
+            string t1 = st.top();
+            st.pop();
+            string t2 = st.top();
+            st.pop();
+            string s = postfix[i] + t2 + t1;
+            st.push(s);
+        }
+        i++;
+    }
+    return st.top();
+}
+
 int main()
 {
-    string s = "*+ab-cd";
-    cout << prefixToInfix(s) << endl;
+    string s = "ab+";
+    cout << postToPre(s) << endl;
 }
