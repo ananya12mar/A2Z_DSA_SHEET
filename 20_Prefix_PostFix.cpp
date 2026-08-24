@@ -153,8 +153,30 @@ string postToInfix(string postExp)
     return st.top();
 }
 
+string prefixToInfix(string s)
+{
+    int i = s.size() - 1;
+    stack<string> st;
+    while (i >= 0)
+    {
+        if (isOperand(s[i]))
+            st.push(string(1, s[i]));
+        else
+        {
+            string t1 = st.top();
+            st.pop();
+            string t2 = st.top();
+            st.pop();
+            string a = "(" + t1 + s[i] + t2 + ')';
+            st.push(a);
+        }
+        i--;
+    }
+    return st.top();
+}
+
 int main()
 {
-    string s = "AB*C+";
-    cout << postToInfix(s) << endl;
+    string s = "*+ab-cd";
+    cout << prefixToInfix(s) << endl;
 }
