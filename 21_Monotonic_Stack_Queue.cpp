@@ -37,24 +37,48 @@ vector<int> nextGreaterElement(vector<int> &nums1, vector<int> &nums2)
     return res;
 }
 
+vector<int> nextGreaterElements(vector<int> &arr)
+{
+    int n = arr.size();
+    vector<int> ans(n);
+    stack<int> st;
+    for (int i = 2 * n - 1; i >= 0; i--)
+    {
+        int idx = i % n;
+        int currEle = arr[idx];
+        while (!st.empty() && st.top() <= currEle)
+            st.pop();
+
+        if (i < n)
+        {
+            if (st.empty())
+                ans[i] = -1;
+            else
+                ans[i] = st.top();
+        }
+        st.push(currEle);
+    }
+    return ans;
+}
+
 int main()
 {
     int n, m;
-    cin >> n >> m;
-    vector<int> v1, v2;
+    cin >> n;
+    vector<int> v1;
     for (int i = 0; i < n; i++)
     {
         int x;
         cin >> x;
         v1.push_back(x);
     }
-    for (int i = 0; i < m; i++)
-    {
-        int x;
-        cin >> x;
-        v2.push_back(x);
-    }
-    vector<int> ans = nextGreaterElement(v1, v2);
+    // for (int i = 0; i < m; i++)
+    // {
+    //     int x;
+    //     cin >> x;
+    //     v2.push_back(x);
+    // }
+    vector<int> ans = nextGreaterElements(v1);
     for (auto c : ans)
     {
         cout << c << " ";
