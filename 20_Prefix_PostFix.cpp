@@ -64,8 +64,75 @@ string infixToPostfix(string s)
     return ans;
 }
 
+string infixToPrefix(string str)
+{
+    string s = str;
+    reverse(s.begin(), s.end());
+    for (char &c : s)
+    {
+        if (c == '(')
+            c = ')';
+        else if (c == ')')
+            c = '(';
+    }
+    int i = 0;
+    stack<char> st;
+    string ans = "";
+
+    while (i < s.size())
+    {
+        if (isOperand(s[i]))
+        {
+            ans += s[i];
+        }
+        else if (s[i] == '(')
+        {
+            st.push(s[i]);
+        }
+        else if (s[i] == ')')
+        {
+            while (!st.empty() && st.top() != '(')
+            {
+                ans += st.top();
+                st.pop();
+            }
+            st.pop();
+        }
+        else
+        {
+            // additional step to be remembered
+            if (s[i] == '^')
+            {
+                while (!st.empty() && prec(s[i]) <= prec(st.top()))
+                {
+                    ans += st.top();
+                    st.pop();
+                }
+            }
+            else
+            {
+                // only < not <=
+                while (!st.empty() && prec(s[i]) < prec(st.top()))
+                {
+                    ans += st.top();
+                    st.pop();
+                }
+            }
+            st.push(s[i]);
+        }
+        i++;
+    }
+    while (!st.empty())
+    {
+        ans += st.top();
+        st.pop();
+    }
+    reverse(ans.begin(), ans.end());
+    return ans;
+}
+
 int main()
 {
     string s = "(a+b)*c";
-    cout << infixToPostfix(s) << endl;
+    cout << infixToPrefix(s) << endl;
 }
