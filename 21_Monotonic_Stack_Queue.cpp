@@ -61,6 +61,25 @@ vector<int> nextGreaterElements(vector<int> &arr)
     return ans;
 }
 
+vector<int> nextSmallerElements(const vector<int> &arr)
+{
+    int n = arr.size();
+    vector<int> res(n);
+    stack<int> st;
+    for (int i = n - 1; i >= 0; i--)
+    {
+        while (!st.empty() && st.top() > arr[i])
+            st.pop();
+        if (st.empty())
+            res[i] = -1;
+        else
+            res[i] = st.top();
+
+        st.push(arr[i]);
+    }
+    return res;
+}
+
 int main()
 {
     int n, m;
@@ -78,7 +97,7 @@ int main()
     //     cin >> x;
     //     v2.push_back(x);
     // }
-    vector<int> ans = nextGreaterElements(v1);
+    vector<int> ans = nextSmallerElements(v1);
     for (auto c : ans)
     {
         cout << c << " ";
