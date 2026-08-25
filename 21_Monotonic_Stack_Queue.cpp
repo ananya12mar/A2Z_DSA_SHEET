@@ -80,24 +80,45 @@ vector<int> nextSmallerElements(const vector<int> &arr)
     return res;
 }
 
+vector<int> count_NGE(vector<int> &arr, vector<int> &indices)
+{
+    int N = arr.size();
+    vector<int> ans(2);
+    for (int j = 0; j < 2; j++)
+    {
+        int count = 0;
+        for (int i = indices[j] + 1; i < N; i++)
+        {
+            if (arr[i] > arr[indices[j]])
+                count++;
+        }
+        ans[j] = count;
+    }
+
+    return ans;
+}
+
 int main()
 {
-    int n, m;
+    int n, a, b;
     cin >> n;
-    vector<int> v1;
+    vector<int> v1, v2;
     for (int i = 0; i < n; i++)
     {
         int x;
         cin >> x;
         v1.push_back(x);
     }
+    cin >> a >> b;
+    v2.push_back(a);
+    v2.push_back(b);
     // for (int i = 0; i < m; i++)
     // {
     //     int x;
     //     cin >> x;
     //     v2.push_back(x);
     // }
-    vector<int> ans = nextSmallerElements(v1);
+    vector<int> ans = count_NGE(v1, v2);
     for (auto c : ans)
     {
         cout << c << " ";
