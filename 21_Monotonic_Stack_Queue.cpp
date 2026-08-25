@@ -119,6 +119,34 @@ int trap(vector<int> &height)
     return total;
 }
 
+int rain_trap(vector<int> &height)
+{
+    // optimised solution SC-> O(1), TC-> O(N)
+    int n = height.size();
+    int left = 0, right = n - 1;
+    int leftMax = 0, rightMax = 0, total = 0;
+    while (left < right)
+    {
+        if (height[left] <= height[right])
+        {
+            if (leftMax > height[left])
+                total += leftMax - height[left];
+            else
+                leftMax = height[left];
+            left++;
+        }
+        else
+        {
+            if (rightMax > height[right])
+                total += rightMax - height[right];
+            else
+                rightMax = height[right];
+            right--;
+        }
+    }
+    return total;
+}
+
 int main()
 {
     int n;
@@ -131,7 +159,7 @@ int main()
     //     v1.push_back(x);
     // }
     vector<int> a = {4, 2, 0, 3, 2, 5};
-    cout << trap(a) << endl;
+    cout << rain_trap(a) << endl;
     // vector<int> ans = count_NGE(v1, v2);
     // for (auto c : ans)
     // {
