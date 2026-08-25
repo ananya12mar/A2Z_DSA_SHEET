@@ -98,29 +98,43 @@ vector<int> count_NGE(vector<int> &arr, vector<int> &indices)
     return ans;
 }
 
-int main()
+int trap(vector<int> &height)
 {
-    int n, a, b;
-    cin >> n;
-    vector<int> v1, v2;
+    // Brute force or suboptimal solution
+    //  space complexity-> O(n)
+    int n = height.size();
+    vector<int> suffixMax(n);
+    suffixMax[n - 1] = height[n - 1];
+    for (int i = n - 2; i >= 0; i--)
+    {
+        suffixMax[i] = max(suffixMax[i + 1], height[i]);
+    }
+    int total = 0;
+    int currmax = INT_MIN;
     for (int i = 0; i < n; i++)
     {
-        int x;
-        cin >> x;
-        v1.push_back(x);
+        currmax = max(height[i], currmax);
+        total += min(currmax, suffixMax[i]) - height[i];
     }
-    cin >> a >> b;
-    v2.push_back(a);
-    v2.push_back(b);
-    // for (int i = 0; i < m; i++)
+    return total;
+}
+
+int main()
+{
+    int n;
+    // cin >> n;
+    // vector<int> v1, v2;
+    // for (int i = 0; i < n; i++)
     // {
     //     int x;
     //     cin >> x;
-    //     v2.push_back(x);
+    //     v1.push_back(x);
     // }
-    vector<int> ans = count_NGE(v1, v2);
-    for (auto c : ans)
-    {
-        cout << c << " ";
-    }
+    vector<int> a = {4, 2, 0, 3, 2, 5};
+    cout << trap(a) << endl;
+    // vector<int> ans = count_NGE(v1, v2);
+    // for (auto c : ans)
+    // {
+    //     cout << c << " ";
+    // }
 }
