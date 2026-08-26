@@ -147,19 +147,76 @@ int rain_trap(vector<int> &height)
     return total;
 }
 
+vector<int> findPSE(vector<int> &arr)
+{
+    vector<int> res;
+    int n = arr.size();
+    stack<int> st;
+    for (int i = 0; i <= n - 1; i++)
+    {
+        while (!st.empty() && arr[st.top()] > arr[i])
+            st.pop();
+        if (st.empty())
+            res.push_back(-1);
+        else
+            res.push_back(st.top());
+        st.push(i);
+    }
+    return res;
+}
+
+vector<int> findNSE(vector<int> &arr)
+{
+    vector<int> res;
+    int n = arr.size();
+    stack<int> st;
+    for (int i = n - 1; i >= 0; i--)
+    {
+        while (!st.empty() && arr[st.top()] >= arr[i])
+            st.pop();
+        if (st.empty())
+            res.push_back(n);
+        else
+            res.push_back(st.top());
+        st.push(i);
+    }
+    reverse(res.begin(), res.end());
+    return res;
+}
+
+int sumSubarrayMins(vector<int> &arr)
+{
+    vector<int> ps = findPSE(arr);
+    vector<int> ns = findNSE(arr);
+
+    int sum = 0;
+    int mod = 1e9 + 7;
+    for (int i = 0; i < arr.size(); i++)
+    {
+        int left = i - ps[i];
+        int right = ns[i] - i;
+        long long freq = left * right * 1LL;
+        int val = (freq * arr[i] * 1LL) % mod;
+        sum = (sum + val) % mod;
+    }
+    return sum;
+}
+
 int main()
 {
     int n;
-    // cin >> n;
-    // vector<int> v1, v2;
-    // for (int i = 0; i < n; i++)
-    // {
-    //     int x;
-    //     cin >> x;
-    //     v1.push_back(x);
-    // }
-    vector<int> a = {4, 2, 0, 3, 2, 5};
-    cout << rain_trap(a) << endl;
+    cin >> n;
+    vector<int> v1, v2;
+    for (int i = 0; i < n; i++)
+    {
+        int x;
+        cin >> x;
+        v1.push_back(x);
+    }
+    cout << sumSubarrayMins(v1);
+
+    // vector<int> a = {4, 2, 0, 3, 2, 5};
+    // cout << rain_trap(a) << endl;
     // vector<int> ans = count_NGE(v1, v2);
     // for (auto c : ans)
     // {
