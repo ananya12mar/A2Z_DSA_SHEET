@@ -233,6 +233,67 @@ vector<int> asteroidCollision(vector<int> &asteroids)
     }
     return st;
 }
+
+vector<int> findPGE(vector<int> &arr)
+{
+    vector<int> res;
+    int n = arr.size();
+    stack<int> st;
+    for (int i = 0; i <= n - 1; i++)
+    {
+        while (!st.empty() && arr[st.top()] < arr[i])
+            st.pop();
+        if (st.empty())
+            res.push_back(-1);
+        else
+            res.push_back(st.top());
+        st.push(i);
+    }
+    return res;
+}
+
+vector<int> findNGE(vector<int> &arr)
+{
+    vector<int> res;
+    int n = arr.size();
+    stack<int> st;
+    for (int i = n - 1; i >= 0; i--)
+    {
+        while (!st.empty() && arr[st.top()] <= arr[i])
+            st.pop();
+        if (st.empty())
+            res.push_back(n);
+        else
+            res.push_back(st.top());
+        st.push(i);
+    }
+    reverse(res.begin(), res.end());
+    return res;
+}
+
+int sumSubarrayMax(vector<int> &arr)
+{
+    vector<int> ps = findPGE(arr);
+    vector<int> ns = findNGE(arr);
+
+    int sum = 0;
+    int mod = 1e9 + 7;
+    for (int i = 0; i < arr.size(); i++)
+    {
+        int left = i - ps[i];
+        int right = ns[i] - i;
+        long long freq = left * right * 1LL;
+        int val = (freq * arr[i] * 1LL) % mod;
+        sum = (sum + val) % mod;
+    }
+    return sum;
+}
+long long subArrayRanges(vector<int> &nums)
+{
+    int sumGreatest = sumSubarrayMax(nums);
+    int sumSmallest = sumSubarrayMins(nums);
+    return sumGreatest - sumSmallest;
+}
 int main()
 {
     int n;
@@ -244,7 +305,7 @@ int main()
         cin >> x;
         v1.push_back(x);
     }
-    cout << sumSubarrayMins(v1);
+    cout << subArrayRanges(v1);
 
     // vector<int> a = {4, 2, 0, 3, 2, 5};
     // cout << rain_trap(a) << endl;
