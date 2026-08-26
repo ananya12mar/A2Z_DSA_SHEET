@@ -234,6 +234,22 @@ vector<int> asteroidCollision(vector<int> &asteroids)
     return st;
 }
 
+long long sumSubarrayMin(vector<int> &arr)
+{
+    vector<int> ps = findPSE(arr);
+    vector<int> ns = findNSE(arr);
+
+    long long sum = 0;
+    for (int i = 0; i < arr.size(); i++)
+    {
+        int left = i - ps[i];
+        int right = ns[i] - i;
+        long long freq = left * right * 1LL;
+        long long val = (freq * arr[i] * 1LL);
+        sum = (sum + val);
+    }
+    return sum;
+}
 vector<int> findPGE(vector<int> &arr)
 {
     vector<int> res;
@@ -271,29 +287,29 @@ vector<int> findNGE(vector<int> &arr)
     return res;
 }
 
-int sumSubarrayMax(vector<int> &arr)
+long long sumSubarrayMax(vector<int> &arr)
 {
     vector<int> ps = findPGE(arr);
     vector<int> ns = findNGE(arr);
 
-    int sum = 0;
-    int mod = 1e9 + 7;
+    long long sum = 0;
     for (int i = 0; i < arr.size(); i++)
     {
         int left = i - ps[i];
         int right = ns[i] - i;
         long long freq = left * right * 1LL;
-        int val = (freq * arr[i] * 1LL) % mod;
-        sum = (sum + val) % mod;
+        long long val = (freq * arr[i] * 1LL);
+        sum = (sum + val);
     }
     return sum;
 }
 long long subArrayRanges(vector<int> &nums)
 {
-    int sumGreatest = sumSubarrayMax(nums);
-    int sumSmallest = sumSubarrayMins(nums);
+    long long sumGreatest = sumSubarrayMax(nums);
+    long long sumSmallest = sumSubarrayMin(nums);
     return sumGreatest - sumSmallest;
 }
+
 int main()
 {
     int n;
