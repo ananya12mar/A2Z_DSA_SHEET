@@ -286,7 +286,7 @@ vector<int> findNGE(vector<int> &arr)
     reverse(res.begin(), res.end());
     return res;
 }
-
+// Very Very Imp
 long long sumSubarrayMax(vector<int> &arr)
 {
     vector<int> ps = findPGE(arr);
@@ -310,6 +310,7 @@ long long subArrayRanges(vector<int> &nums)
     return sumGreatest - sumSmallest;
 }
 
+// Very Very Imp
 string removeKdigits(string nums, int k)
 {
     stack<char> st;
@@ -319,7 +320,6 @@ string removeKdigits(string nums, int k)
         while (!st.empty() && k > 0 && st.top() > digit)
         {
             st.pop();
-
             k--;
         }
         st.push(digit);
@@ -354,6 +354,35 @@ string removeKdigits(string nums, int k)
     return res;
 }
 
+// Very very Imp
+int largestRectangleArea(vector<int> &heights)
+{
+    stack<int> st;
+    int n = heights.size();
+    int maxArea = INT_MIN;
+    for (int i = 0; i < n; i++)
+    {
+        while (!st.empty() && heights[st.top()] > heights[i])
+        {
+            int element = heights[st.top()];
+            st.pop();
+            int ns = i;
+            int ps = st.empty() ? -1 : st.top();
+            maxArea = max(maxArea, element * (ns - ps - 1));
+        }
+        st.push(i);
+    }
+    while (!st.empty())
+    {
+        int ns = n;
+        int element = heights[st.top()];
+        st.pop();
+        int ps = st.empty() ? -1 : st.top();
+        maxArea = max(maxArea, element * (ns - ps - 1));
+    }
+    return maxArea;
+}
+
 int main()
 {
     int n;
@@ -365,7 +394,7 @@ int main()
         cin >> x;
         v1.push_back(x);
     }
-    cout << subArrayRanges(v1);
+    cout << largestRectangleArea(v1);
 
     // vector<int> a = {4, 2, 0, 3, 2, 5};
     // cout << rain_trap(a) << endl;
