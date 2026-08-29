@@ -26,6 +26,36 @@ vector<int> maxSlidingWindow(vector<int> &arr, int k)
     return ans;
 }
 
+vector<int> findPGE(vector<int> &arr)
+{
+    vector<int> res;
+    int n = arr.size();
+    stack<int> st;
+    for (int i = 0; i <= n - 1; i++)
+    {
+        while (!st.empty() && arr[st.top()] < arr[i])
+            st.pop();
+        if (st.empty())
+            res.push_back(-1);
+        else
+            res.push_back(st.top());
+        st.push(i);
+    }
+    return res;
+}
+
+vector<int> stockSpan(vector<int> arr, int n)
+{
+    vector<int> PGE = findPGE(arr);
+    vector<int> ans(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        ans[i] = i - PGE[i];
+    }
+    return ans;
+}
+
 int main()
 {
     int n, k;
