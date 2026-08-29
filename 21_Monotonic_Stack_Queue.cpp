@@ -392,18 +392,41 @@ int largestRectangleArea(vector<int> &heights)
     return maxArea;
 }
 
-int main()
+int maximalAreaOfSubMatrixOfAll1(vector<vector<int>> &matrix)
 {
-    int n;
-    cin >> n;
-    vector<int> v1, v2;
+    int maxArea = 0;
+    int n = matrix.size();
+    int m = matrix[0].size();
+    vector<int> height(m, 0);
     for (int i = 0; i < n; i++)
     {
-        int x;
-        cin >> x;
-        v1.push_back(x);
+        for (int j = 0; j < m; j++)
+        {
+            if (matrix[i][j] == 1)
+                height[j]++;
+            else
+                height[j] = 0;
+        }
+        int area = largestRectangleArea(height);
+        maxArea = max(area, maxArea);
     }
-    cout << largestRectangleArea(v1);
+    return maxArea;
+}
+int main()
+{
+    int n, m;
+    cin >> n >> m;
+    vector<vector<int>> v(n, vector<int>(m));
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            int x;
+            cin >> x;
+            v[i][j] = x;
+        }
+    }
+    cout << maximalAreaOfSubMatrixOfAll1(v);
 
     // vector<int> a = {4, 2, 0, 3, 2, 5};
     // cout << rain_trap(a) << endl;
