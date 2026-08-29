@@ -314,6 +314,8 @@ long long subArrayRanges(vector<int> &nums)
 string removeKdigits(string nums, int k)
 {
     stack<char> st;
+
+    // traverse and popbigger elements in stack
     for (int i = 0; i < nums.size(); i++)
     {
         char digit = nums[i];
@@ -325,15 +327,18 @@ string removeKdigits(string nums, int k)
         st.push(digit);
     }
 
+    // if we still need to remove elements i.e. k>0 then pop from stack
     while (!st.empty() && k > 0)
     {
         st.pop();
         k--;
     }
 
+    // if stack becomes empty we return "0"
     if (st.empty())
         return "0";
 
+    // app elements of stack in string
     string res = "";
     while (!st.empty())
     {
@@ -341,13 +346,17 @@ string removeKdigits(string nums, int k)
         st.pop();
     }
 
+    // if string has trailing zeros, remove them
     while (res.size() > 0 &&
            res.back() == '0')
     {
         res.pop_back();
     }
 
+    // reverse the sting to get ans
     reverse(res.begin(), res.end());
+
+    // if reversed string is empty then return "0" else res string
     if (res.empty())
         return "0";
 
