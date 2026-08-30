@@ -29,7 +29,7 @@ int longestNonRepeatingSubstring(string &s)
     return maxLen;
 }
 
-// Approach 1
+// Approach 1 T.C = O(2N) since 2 while loops
 int longestOnes1(vector<int> &nums, int k)
 {
     int zeros = 0;
@@ -57,6 +57,34 @@ int longestOnes1(vector<int> &nums, int k)
     return maxLen;
 }
 
+// very very imp
+// Approach 2 -> most optimal T.C. = O(N)
+int longestOnes2(vector<int> &nums, int k)
+{
+    int zeros = 0;
+    int left = 0, right = 0, maxLen = 0;
+    while (right < nums.size())
+    {
+        if (nums[right] == 0)
+            zeros++;
+        if (zeros > k)
+        {
+            if (nums[left] == 0)
+            {
+                zeros--;
+            }
+            left++;
+        }
+        if (zeros <= k)
+        {
+            int len = right - left + 1;
+            maxLen = max(maxLen, len);
+        }
+        right++;
+    }
+    return maxLen;
+}
+
 int main()
 {
     int n, k;
@@ -68,5 +96,5 @@ int main()
         cin >> x;
         v.push_back(x);
     }
-    cout << longestOnes1(v, k);
+    cout << longestOnes2(v, k);
 }
