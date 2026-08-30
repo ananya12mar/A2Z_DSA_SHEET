@@ -41,6 +41,7 @@ vector<int> bubbleSort(vector<int> &nums)
     }
     return nums;
 }
+
 vector<int> insertionSort(vector<int> &nums)
 {
     for (int i = 1; i < nums.size(); i++)
@@ -56,6 +57,7 @@ vector<int> insertionSort(vector<int> &nums)
     }
     return nums;
 }
+
 void merge(vector<int> &nums, int low, int mid, int high)
 {
     vector<int> temp;
@@ -159,6 +161,44 @@ vector<int> insertionSortRecursive(vector<int> &nums)
     return arr;
 }
 
+int partition(vector<int> &arr, int low, int high)
+{
+    int pivot = arr[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; j++)
+    {
+        // If element is smaller than or equal to pivot
+        if (arr[j] <= pivot)
+        {
+            // Increment i and swap with j
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+
+    // Place pivot in correct position
+    swap(arr[i + 1], arr[high]);
+
+    return i + 1;
+}
+
+void quickSortR(vector<int> &arr, int low, int high)
+{
+    if (low < high)
+    {
+        int pivotIndex = partition(arr, low, high);
+        quickSortR(arr, low, pivotIndex - 1);
+        quickSortR(arr, pivotIndex + 1, high);
+    }
+}
+
+vector<int> quickSort(vector<int> &nums)
+{
+    quickSortR(nums, 0, nums.size() - 1);
+    return nums;
+}
+
 int main()
 {
     int n;
@@ -170,8 +210,8 @@ int main()
         cin >> x;
         arr.push_back(x);
     }
-    vector<int> res = insertionSortRecursive(arr);
-    for (auto v : res)
+    quickSortR(arr, 0, arr.size() - 1);
+    for (auto v : arr)
     {
         cout << v << " ";
     }
