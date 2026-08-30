@@ -29,18 +29,44 @@ int longestNonRepeatingSubstring(string &s)
     return maxLen;
 }
 
+// Approach 1
+int longestOnes1(vector<int> &nums, int k)
+{
+    int zeros = 0;
+    int left = 0, right = 0, maxLen = 0;
+    while (right < nums.size())
+    {
+        if (nums[right] == 0)
+            zeros++;
+
+        // invalid subarray, make it valid by decreasing zeros in range
+        while (zeros > k)
+        {
+            if (nums[left] == 0)
+                zeros--;
+            left++;
+        }
+
+        if (zeros <= k) // valid subarray
+        {
+            int len = right - left + 1;
+            maxLen = max(maxLen, len);
+        }
+        right++;
+    }
+    return maxLen;
+}
+
 int main()
 {
-    int n;
-    cin >> n;
-    string s;
-    cin >> s;
-    // vector<int> v;
-    // for (int i = 0; i < n; i++)
-    // {
-    //     int x;
-    //     cin >> x;
-    //     v.push_back(x);
-    // }
-    cout << longestNonRepeatingSubstring(s);
+    int n, k;
+    cin >> n >> k;
+    vector<int> v;
+    for (int i = 0; i < n; i++)
+    {
+        int x;
+        cin >> x;
+        v.push_back(x);
+    }
+    cout << longestOnes1(v, k);
 }
