@@ -135,6 +135,30 @@ vector<int> bubbleSortRecursive(vector<int> &nums)
     return arr;
 }
 
+void insertion_sort(vector<int> &arr, int i, int n)
+{
+    if (i == n)
+        return;
+
+    int j = i;
+
+    while (j > 0 && arr[j - 1] > arr[j])
+    {
+        int temp = arr[j - 1];
+        arr[j - 1] = arr[j];
+        arr[j] = temp;
+        j--;
+    }
+    insertion_sort(arr, i + 1, n);
+}
+
+vector<int> insertionSortRecursive(vector<int> &nums)
+{
+    vector<int> arr = nums;
+    insertion_sort(arr, 0, arr.size());
+    return arr;
+}
+
 int main()
 {
     int n;
@@ -146,7 +170,7 @@ int main()
         cin >> x;
         arr.push_back(x);
     }
-    vector<int> res = bubbleSortRecursive(arr);
+    vector<int> res = insertionSortRecursive(arr);
     for (auto v : res)
     {
         cout << v << " ";
